@@ -2,7 +2,8 @@
 
 ###############################################################################
 #                            NetVision Bash Script                            #
-#         Gathers network info, runs stealthy scans, sets up netcat & ngrok  #
+#         Gathers network info, runs stealthy scans, sets up netcat & ngrok 
+#                                @Copyleft#
 ###############################################################################
 
 ########################
