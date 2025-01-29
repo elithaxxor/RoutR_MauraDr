@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+###############################################################################
+#                            NetVision Bash Script                            #
+#         Gathers network info, runs stealthy scans, sets up netcat & ngrok  #
+###############################################################################
+
 ########################
 # COLOR DEFINITIONS
 ########################
@@ -12,25 +17,21 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 ########################
-# 1) Display Script Info
+# 1) NAME & INFO
 ########################
 whatDoIdO() {
     echo -e "\n${CYAN}========================================="
-    echo -e "      NETWORK INFORMATION SCRIPT        "
+    echo -e "         NETWORK INFORMATION APP        "
     echo -e "=========================================${NC}"
-    echo "This script retrieves and displays:"
-    echo "- Local IP Address"
-    echo "- Router IP Address"
-    echo "- Router MAC Address"
-    echo "- Router Make & Model"
-    echo "- Router Firmware Version"
-    echo "- DNS Servers"
-    echo "- WAN IP Address"
-    echo "- ARP Table Scan"
+    echo "This script retrieves and displays network info, scans the LAN, and:"
+    echo "- Installs netcat & ngrok"
+    echo "- Starts netcat listening on port 6666"
+    echo "- Creates ngrok tunnels: TCP 6667 & HTTP 80"
+    echo "- Performs a quick stealthy port scan + OS detection"
 }
 
 ########################
-# 2) Summary After Execution
+# 2) SUMMARY AFTER EXEC
 ########################
 whatDidIdo() {
     echo -e "\n${CYAN}========================================="
@@ -39,75 +40,73 @@ whatDidIdo() {
 }
 
 ########################
-# 3) Install Dependencies
+# 3) INSTALL DEPENDENCIES
 ########################
 install_dependencies() {
-    echo -e "\n${WHITE}Attempting to install SNMP and UPnP packages...${NC}"
-    # Minimal attempt for Debian/Ubuntu
-    sudo apt install -y snmp miniupnpc dnsutils 2>/dev/null || true
+    echo -e "\n${WHITE}Attempting to install SNMP, UPnP, nmap, netcat (nc)...${NC}"
+    sudo apt install -y snmp miniupnpc dnsutils nmap netcat 2>/dev/null || true
 
-    # Check for a Debian/Ubuntu-based system
+    # Debian/Ubuntu
     if [ -x "$(command -v apt-get)" ]; then
         sudo apt-get update -y
-        sudo apt-get install -y snmp miniupnpc
-    # Check for a RedHat/CentOS-based system
+        sudo apt-get install -y snmp miniupnpc nmap netcat
+    # RedHat/CentOS
     elif [ -x "$(command -v yum)" ]; then
-        sudo yum install -y net-snmp miniupnpc
+        sudo yum install -y net-snmp miniupnpc nmap nc
     else
-        echo -e "${YELLOW}No compatible package manager found. Please install 'snmp' and 'miniupnpc' manually.${NC}"
+        echo -e "${YELLOW}No compatible package manager found. Please install 'snmp', 'miniupnpc', 'nmap', and 'netcat' manually.${NC}"
     fi
 }
 
 ########################
-# 4) Save Discovered Data
+# 4) INSTALL & START NGROK, NETCAT
 ########################
-# This function references an array named `discovered_data`.
-# Make sure you have `discovered_data` populated before calling it.
-save_discovered_data() {
-    local txt_file="discovered_data.txt"
-    local json_file="discovered_data.json"
+install_and_start_netcat_ngrok() {
+    echo -e "\n${WHITE}Installing & configuring ngrok...${NC}"
 
-    # Clear (or create) both files
-    > "$txt_file"
-    > "$json_file"
-
-    # 1) Write a header to the TXT file
-    printf "%-20s %-20s %-20s\n" "IP Address" "MAC Address" "Hostname" >> "$txt_file"
-    printf "%-20s %-20s %-20s\n" "----------" "-----------" "---------" >> "$txt_file"
-
-    # 2) Start the JSON array
-    echo "[" >> "$json_file"
-    local first_record=true
-
-    # 3) Loop through the discovered data
-    for entry in "${discovered_data[@]}"; do
-        ip="${entry%%|*}"
-        remainder="${entry#*|}"
-        mac="${remainder%%|*}"
-        hostname="${remainder#*|}"
-
-        # Print nicely to the TXT file
-        printf "%-20s %-20s %-20s\n" "$ip" "$mac" "$hostname" >> "$txt_file"
-
-        # Write each item as a JSON object
-        if [ "$first_record" = true ]; then
-            first_record=false
+    # 4.1) Check if ngrok is already installed
+    if ! command -v ngrok &>/dev/null; then
+        echo -e "${YELLOW}ngrok not found; attempting download...${NC}"
+        
+        # Download ngrok (Linux 64-bit). Adjust for other OS/arch if needed.
+        curl -sLO "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
+        if [ -f "ngrok-stable-linux-amd64.zip" ]; then
+            unzip -o ngrok-stable-linux-amd64.zip
+            chmod +x ngrok
+            sudo mv ngrok /usr/local/bin/
+            rm -f ngrok-stable-linux-amd64.zip
+            echo -e "${GREEN}ngrok installed to /usr/local/bin/ngrok${NC}"
         else
-            echo "," >> "$json_file"
+            echo -e "${RED}Failed to download ngrok. Please install manually.${NC}"
         fi
-        echo "  { \"ip\": \"$ip\", \"mac\": \"$mac\", \"hostname\": \"$hostname\" }" >> "$json_file"
-    done
+    else
+        echo -e "${GREEN}ngrok is already installed.${NC}"
+    fi
 
-    # Close the JSON array
-    echo "]" >> "$json_file"
+    # 4.2) Optional: set your ngrok auth token if you want persistent tunnels
+    # If you have an authtoken, uncomment and replace YOUR_TOKEN_HERE:
+    # ngrok config add-authtoken "YOUR_TOKEN_HERE"
 
-    echo -e "\n${GREEN}Data saved to:"
-    echo " - $txt_file"
-    echo " - $json_file${NC}"
+    # 4.3) Start netcat listener on port 6666 in background
+    echo -e "\n${CYAN}Starting netcat listener on port 6666...${NC}"
+    # -l = listen mode, -p 6666 = port, -v = verbose
+    # run in background (&)
+    nc -lvp 6666 > /dev/null 2>&1 &
+    echo -e "${GREEN}Netcat listening on port 6666 (PID $!).${NC}"
+
+    # 4.4) Start ngrok TCP on port 6667 in background
+    echo -e "${CYAN}Starting ngrok TCP tunnel on port 6667...${NC}"
+    ngrok tcp 6667 --log=stdout > /dev/null 2>&1 &
+    echo -e "${GREEN}ngrok TCP tunnel started for port 6667 (PID $!).${NC}"
+
+    # 4.5) Also start ngrok HTTP on port 80 in background
+    echo -e "${CYAN}Starting ngrok HTTP tunnel on port 80...${NC}"
+    ngrok http 80 --log=stdout > /dev/null 2>&1 &
+    echo -e "${GREEN}ngrok HTTP tunnel started for port 80 (PID $!).${NC}"
 }
 
 ########################
-# 5) DNS Servers
+# 5) DNS SERVERS
 ########################
 get_dns_servers() {
     echo -e "\n${MAGENTA}DNS Servers:${NC}"
@@ -124,7 +123,7 @@ get_wan_ip() {
 }
 
 ########################
-# 7) Router MAC
+# 7) ROUTER MAC
 ########################
 get_router_mac() {
     local router_mac
@@ -133,7 +132,7 @@ get_router_mac() {
 }
 
 ########################
-# 8) ARP Table + Hostnames
+# 8) ARP TABLE + HOSTNAMES
 ########################
 get_arp_table_with_hostnames() {
     echo -e "\n${CYAN}Fetching ARP table and resolving hostnames...${NC}"
@@ -172,7 +171,7 @@ get_arp_table_with_hostnames() {
     echo -e "\n${MAGENTA}Discovered IP Addresses:${NC}"
     printf "%s\n" "${discovered_ips[@]}"
 
-    # 2) Save discovered IPs to JSON
+    # 2) Save discovered IPs to JSON + TXT
     local output_txt="discovered_ips.txt"
     local output_json="discovered_ips.json"
     > "$output_txt"
@@ -181,14 +180,13 @@ get_arp_table_with_hostnames() {
     echo "[" >> "$output_json"
     local first_record=true
     for ip in "${discovered_ips[@]}"; do
-        # Separate JSON objects with a comma if not the first record
         if [ "$first_record" = true ]; then
             first_record=false
         else
             echo "," >> "$output_json"
         fi
         echo "  { \"ip\": \"$ip\" }" >> "$output_json"
-        # Also append to a discovered_ips.txt file
+        # Also append to the discovered_ips.txt file
         echo "$ip" >> "$output_txt"
     done
     echo "]" >> "$output_json"
@@ -200,7 +198,7 @@ get_arp_table_with_hostnames() {
 }
 
 ########################
-# 9) Local IP
+# 9) LOCAL IP
 ########################
 get_local_ip() {
     local ip_address
@@ -209,7 +207,7 @@ get_local_ip() {
 }
 
 ########################
-# 10) Router IP
+# 10) ROUTER IP
 ########################
 get_router_ip() {
     local router_ip
@@ -223,17 +221,16 @@ get_router_ip() {
 }
 
 ########################
-# 11) Subnet Mask
+# 11) SUBNET MASK
 ########################
 get_subnet_mask() {
     local subnet_mask
     subnet_mask=$(ifconfig 2>/dev/null | grep -w 'netmask' | awk '{print $4}' | head -n 1)
-    # Some distros may use 'Mask:' or different syntax. Adjust as needed.
     echo -e "${MAGENTA}Subnet Mask:${NC} $subnet_mask"
 }
 
 ########################
-# 12) Router DNS Table
+# 12) ROUTER DNS TABLE
 ########################
 get_router_dns_table() {
     local router_ip
@@ -300,10 +297,9 @@ get_router_dns_table() {
         echo "upnpc not available. Skipping UPnP attempt." | tee -a "$txt_file"
     fi
 
-    # Fallback DNS Brute Force
+    # DNS Brute Force
     echo -e "\n--- Fallback DNS Brute Force ---" | tee -a "$txt_file"
     if command -v nslookup &>/dev/null; then
-        # Adjust this subnet as needed
         local subnet_prefix="192.168.1"
         for i in {1..254}; do
             local test_ip="${subnet_prefix}.${i}"
@@ -358,7 +354,7 @@ get_router_dns_table() {
 }
 
 ########################
-# 13) Router Make & Model
+# 13) ROUTER MAKE & MODEL
 ########################
 get_router_make_model() {
     local router_ip
@@ -370,7 +366,7 @@ get_router_make_model() {
 }
 
 ########################
-# 14) Router Firmware
+# 14) ROUTER FIRMWARE
 ########################
 get_router_firmware() {
     local router_ip
@@ -406,16 +402,107 @@ get_router_firmware() {
 }
 
 ########################
-# 15) MAIN
+# 15) QUICK PING & PORT SCAN (with OS Detection)
+########################
+quick_ping_and_port_scan() {
+    local target_ip="$1"
+    local output_file="quick_scan.txt"  # Full Nmap output (including OS guess)
+    local ports_txt="open_ports.txt"    # Parsed open ports in TXT
+    local ports_json="open_ports.json"  # Parsed open ports in JSON
+
+    echo -e "\n${CYAN}Performing quick ping & stealthy port scan on ${WHITE}$target_ip${NC}..."
+    
+    # 1) Initialize or clear the files
+    echo "Target: $target_ip" > "$output_file"
+    > "$ports_txt"
+    > "$ports_json"
+
+    # 2) Check if host is up via ping (-c 1, -W 1)
+    local ping_result
+    ping_result=$(ping -c 1 -W 1 "$target_ip" 2>/dev/null)
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Host is up (ping successful).${NC}"
+        echo "Host is up (ping successful)." >> "$output_file"
+
+        # 3) SYN stealth scan on top 10 ports, plus OS detection (-O).
+        #    --osscan-limit tries OS detection only if at least one open port is found.
+        #    --osscan-guess attempts a guess if OS detection isn't definitive.
+        echo -e "\n${YELLOW}Scanning top 10 TCP ports with OS detection...${NC}"
+        echo "Scanning top 10 TCP ports with OS detection..." >> "$output_file"
+
+        local scan_result
+        scan_result=$(sudo nmap -sS -n --top-ports 10 -O --osscan-limit --osscan-guess "$target_ip" 2>/dev/null)
+
+        # 4) Write the raw scan output to the main log file
+        echo "$scan_result" >> "$output_file"
+
+        # 5) Parse open ports from the nmap output
+        local open_ports=()
+        while read -r line; do
+            port=$(echo "$line" | grep -Eo '^[0-9]+/tcp' | cut -d'/' -f1)
+            if [ -n "$port" ]; then
+                open_ports+=("$port")
+            fi
+        done < <(echo "$scan_result" | grep -i "open")
+
+        # 6) Attempt to extract OS details
+        local os_detect
+        # Common lines are "Running:", "OS details:", "Aggressive OS guesses:"
+        os_detect=$(echo "$scan_result" | grep -E "Running:|OS details:|Aggressive OS guesses:")
+
+        if [ ${#open_ports[@]} -eq 0 ]; then
+            echo -e "${RED}No open ports found in the top 10.${NC}"
+            echo "No open ports found in the top 10." >> "$output_file"
+        else
+            # Save open ports to a TXT file
+            echo "Open Ports:" >> "$ports_txt"
+            for p in "${open_ports[@]}"; do
+                echo "$p" >> "$ports_txt"
+            done
+
+            # Save open ports to a JSON file
+            echo "[" >> "$ports_json"
+            local first_port=true
+            for p in "${open_ports[@]}"; do
+                if [ "$first_port" = true ]; then
+                    first_port=false
+                else
+                    echo "," >> "$ports_json"
+                fi
+                echo "  { \"port\": \"$p\" }" >> "$ports_json"
+            done
+            echo "]" >> "$ports_json"
+
+            echo -e "${GREEN}Found open ports: ${open_ports[*]}${NC}"
+            echo "Open ports saved to: $ports_txt, $ports_json" >> "$output_file"
+        fi
+
+        # 7) OS detection results
+        if [ -n "$os_detect" ]; then
+            echo -e "\n${GREEN}Possible OS detection results:${NC}"
+            echo "$os_detect"
+            echo -e "\nOS detection output:\n$os_detect" >> "$output_file"
+        else
+            echo -e "\n${RED}OS detection failed or was inconclusive.${NC}"
+            echo -e "\nOS detection failed or was inconclusive." >> "$output_file"
+        fi
+
+    else
+        echo -e "${RED}Host $target_ip seems down (ping timed out).${NC}"
+        echo "Host $target_ip seems down (ping timed out)." >> "$output_file"
+    fi
+
+    echo -e "\n${GREEN}Scan results saved to $output_file${NC}"
+    echo -e "${GREEN}Parsed open ports saved to $ports_txt, $ports_json${NC}"
+}
+
+########################
+# 16) MAIN
 ########################
 main() {
-    # 1) Intro
     whatDoIdO
-
-    # 2) Install Dependencies
     install_dependencies
 
-    # 3) Show Network Details
     echo -e "\n${CYAN}-----------------------------------------"
     echo "             NETWORK DETAILS             "
     echo -e "-----------------------------------------${NC}"
@@ -423,7 +510,7 @@ main() {
     get_local_ip
     local router_ip
     router_ip=$(get_router_ip)
-    if [ $? -eq 0 ]; then
+    if [ $? -eq 0 ] && [ -n "$router_ip" ]; then
         echo -e "${MAGENTA}Router IP Address:${NC} $router_ip"
     fi
 
@@ -433,19 +520,24 @@ main() {
     get_router_mac
     get_router_make_model
     get_router_firmware
-
-    # 4) ARP Table
     get_arp_table_with_hostnames
-
-    # 5) Router DNS Table
     get_router_dns_table
 
-    # 6) Summary
+    # OPTIONAL: Quick port scan of the router, includes OS detection
+    if [ -n "$router_ip" ]; then
+        quick_ping_and_port_scan "$router_ip"
+    fi
+
+    # Finally, install & start netcat + two ngrok processes:
+    #  - TCP on 6667
+    #  - HTTP on 80
+    install_and_start_netcat_ngrok
+
     whatDidIdo
 }
 
 ########################
-# 16) Run It All
+# 17) RUN THE SCRIPT
 ########################
 echo -e "${GREEN}hi${NC}"
 main
