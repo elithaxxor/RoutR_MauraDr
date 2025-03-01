@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-###############################################################################
-#                            NetVision Bash Script                            #
+##############################################################################################
+#                            NetVision Bash Script                            
 #         Gathers network info, runs stealthy scans, sets up netcat & ngrok 
 #                                @Copyleft#
-###############################################################################
+# --- Gets network information, especially router; so you can SSH knowing defualts / firmware
+###############################################################################################
 
 ########################
 # COLOR DEFINITIONS
