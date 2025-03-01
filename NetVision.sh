@@ -7,6 +7,9 @@
 # --- Gets network information, especially router; so you can SSH knowing defualts / firmware
 ###############################################################################################
 
+
+# TODO: Make function to ssh and bruteforce defualt router credentials 
+
 ########################
 # COLOR DEFINITIONS
 ########################
