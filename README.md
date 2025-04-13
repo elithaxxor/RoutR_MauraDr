@@ -1,4 +1,4 @@
-# RoutR_MauraDr
+# RoutR_MauraDr v1.1 Alpha - [Web Interface Added, for the script kiddies]
 
 
 NetVision is a Bash-based utility that automates network discovery, quick port scanning (with stealthy SYN scans and OS detection), and simple router analysis (including an attempt to detect router firmware). Additionally, it installs and starts **netcat** (on port 6666) and **ngrok** (TCP on port 6667, HTTP on port 80) for easy remote tunneling and local port listening.
@@ -8,6 +8,8 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 ## TODO: 
 
 **Add auto-search** for firmware bugs and auto ssh with firmware defualt passwords
+**Automate CVE Dialation** --> I have the code and every single CVE known to man (legally obtained); so figure a way to isolate iOT CVEs from what I have, and then automate discovery, test, enum phase. 
+
 
 ## **Table of Contents**  
 1. [Features](#features)  
