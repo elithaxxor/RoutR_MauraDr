@@ -1,4 +1,5 @@
-# **NetVision**  
+# RoutR_MauraDr
+
 
 NetVision is a Bash-based utility that automates network discovery, quick port scanning (with stealthy SYN scans and OS detection), and simple router analysis (including an attempt to detect router firmware). Additionally, it installs and starts **netcat** (on port 6666) and **ngrok** (TCP on port 6667, HTTP on port 80) for easy remote tunneling and local port listening.
 
