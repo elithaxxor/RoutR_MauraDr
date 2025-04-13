@@ -5,7 +5,9 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 
 ---
 
-# TODO: Add auto-search for firmware bugs and auto ssh with firmware defualt passwords
+## TODO: 
+
+**Add auto-search** for firmware bugs and auto ssh with firmware defualt passwords
 
 ## **Table of Contents**  
 1. [Features](#features)  
