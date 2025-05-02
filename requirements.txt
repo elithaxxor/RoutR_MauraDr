@@ -1,0 +1,11 @@
+flask
+flask-restx
+flask-jwt-extended
+impacket
+pandas
+matplotlib
+jinja2
+requests
+werkzeug
+cryptography
+OpenSSL
