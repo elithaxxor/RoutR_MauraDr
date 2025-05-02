@@ -62,23 +62,9 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 ---
 
 ## **Installation** <a id="installation"></a>  
-1. **Download** or **Clone** this repository to your local machine.  
-2. **Make the script executable**:  
-   ```bash
-   chmod +x netvision.sh
-   ```
-3. (Optional) **Place** it in a directory within your `$PATH`, e.g.:  
-   ```bash
-   sudo mv netvision.sh /usr/local/bin/netvision
-   sudo chmod +x /usr/local/bin/netvision
-   ```
-
----
-
-## **Usage** <a id="usage"></a>  
-
-
-## [USAGE]
+1. **Download** or **Clone** this repository to your local machine.
+2. 
+## [INSTALLATION - UPDATE]
 ### **Updated Section for the README**
 
 ---
@@ -128,6 +114,22 @@ Before running the program, ensure that you have set up the necessary configurat
   - 
 - **Environment-Specific Configurations**:
   - If deploying in different environments (e.g., development, testing, production), consider creating separate config files for each environment.
+  - 
+3. **Make the script executable**:  
+   ```bash
+   chmod +x netvision.sh
+   ```
+4. (Optional) **Place** it in a directory within your `$PATH`, e.g.:  
+   ```bash
+   sudo mv netvision.sh /usr/local/bin/netvision
+   sudo chmod +x /usr/local/bin/netvision
+   ```
+
+---
+
+## **Usage** <a id="usage"></a>  
+
+
 
 ---
 
