@@ -6,10 +6,10 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 ---
 
 ## TODO: 
-
+```
 **Add auto-search** for firmware bugs and auto ssh with firmware defualt passwords
 **Automate CVE Dialation** --> I have the code and every single CVE known to man (legally obtained); so figure a way to isolate iOT CVEs from what I have, and then automate discovery, test, enum phase. 
-
+```
 
 ## **Table of Contents**  
 1. [Features](#features)  
