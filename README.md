@@ -76,6 +76,76 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 ---
 
 ## **Usage** <a id="usage"></a>  
+
+
+## [USAGE]
+### **Updated Section for the README**
+
+---
+
+## **Configuration Setup** <a id="configuration-setup"></a>
+
+Before running the program, ensure that you have set up the necessary configuration files. The application requires two configuration files: `config.ini` and `config.yaml`.
+
+### **Steps to Configure**
+
+1. **Locate the Config Files**:
+   - Both `config.ini` and `config.yaml` are located in the `web` directory.
+
+2. **Edit the Config Files**:
+   - Open the files in a text editor of your choice and update the following variables:
+
+   **In `config.ini`**:
+   ```ini
+   [jwt]
+   secret_key = your-secret-key  # Replace 'your-secret-key' with a strong, secure key
+   ```
+
+   **In `config.yaml`**:
+   ```yaml
+   jwt:
+     secret_key: "your-secret-key"  # Replace 'your-secret-key' with a strong, secure key
+   ```
+
+3. **Variables to Adjust**:
+4. 
+   - **JWT Secret Key**:
+     - Found in both `config.ini` and `config.yaml`.
+     - This must be a strong, unique key used for signing and verifying JWT tokens.
+   - **Database Path**:
+     - In `config.ini`, ensure the `path` under `[database]` points to the correct database file (default: `smb_enum.db`).
+   - **Network CIDR**:
+     - In `config.yaml`, update the `default_cidr` under `network` if your network's IP range differs from the default (`192.168.1.0/24`).
+
+5. **Save Changes**:
+6. 
+   - After editing, save the files and ensure they remain in the `web` directory.
+
+### **Important Reminders**:
+
+- **JWT Secret Key**:
+  - This key is critical for securing your application. Never use the default key in a production environment.
+  - 
+- **Environment-Specific Configurations**:
+  - If deploying in different environments (e.g., development, testing, production), consider creating separate config files for each environment.
+
+---
+
+### **Example Commands**
+After setting up the configuration files, you can run the application as follows:
+
+```bash
+python3 web/server/run.py
+```
+
+Ensure all dependencies are installed by running:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
 1. **Run** the script (ideally with `sudo` for best results):  
    ```bash
    sudo ./netvision.sh
@@ -167,11 +237,7 @@ NetVision tries to detect the router’s firmware version in the following order
 
 ---
 
-## **License** <a id="license"></a>
-This script is released under the [MIT License](https://opensource.org/licenses/MIT). You are free to use, modify, and distribute it. Please ensure you have **permission** and **authority** to run port scans or gather device info on your network.
-
-**Disclaimer**: Use responsibly and within the bounds of local laws and organizational policies. The author(s) assume no liability for misuse.  
+The primary README file for the `RoutR_MauraDr` project has been located. I will now write a section to update the end user with the new installation and configuration instructions, including reminders about filling in critical variables like the JWT secret key.
 
 ---
-
 **Enjoy exploring and testing your network with NetVision!** For questions or suggestions, feel free to open an issue or send a pull request.  
