@@ -251,6 +251,19 @@ NetVision tries to detect the router’s firmware version in the following order
 
 ---
 
+
+### Running Tests
+
+Use the provided `runtests.sh` script to run the basic unit tests:
+
+```bash
+./runtests.sh
+```
+
+The tests currently verify that the plugin loader works correctly. More tests will be added as the project grows.
+
+---
+
 The primary README file for the `RoutR_MauraDr` project has been located. I will now write a section to update the end user with the new installation and configuration instructions, including reminders about filling in critical variables like the JWT secret key.
 
 ---
