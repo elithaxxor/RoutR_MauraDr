@@ -5,6 +5,88 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 
 ---
 
+
+🚀 Features
+
+🔍 Network Discovery
+	•	Detects Local IP, Router IP, WAN IP, Subnet, MAC, DNS servers
+	•	ARP Table scan with device hostname, MAC, and IP
+	•	DNS Table extraction via SNMP, UPnP, brute-force
+
+🔓 Router Analysis
+	•	Detects router make/model via login page scraping
+	•	Extracts router firmware via SNMP/UPnP/HTTP
+	•	Auto-SSH login attempts with default credentials
+
+🛡 Security Assessment
+	•	CVE database lookup for known firmware vulnerabilities (offline)
+	•	Stealthy port scan & OS detection via nmap
+	•	Integrates with OpenVAS/Nessus for deeper scans
+	•	Firmware update checker using cached vendor data
+
+🌐 Remote Tunneling
+	•	Starts netcat listener on port 6666
+	•	Launches ngrok tunnels (TCP 6667, HTTP 80)
+
+🧩 Extensible & Automated
+	•	Plugin-based scanning (drop files in plugins/)
+	•	JSON/TXT result exports for offline review
+	•	Simple GUI with Tkinter (web/src/gui.py)
+	•	Scan scheduling based on past results
+	•	Pushbullet alerts for critical events
+
+🗂 Output Files
+	•	open_ports.json, quick_scan.txt, discovered_ips.json, etc.
+
+⸻
+
+🔁 Feature Flowchart
+
+flowchart TD
+    Start([Start NetVision])
+    Config[Load config.yaml & config.ini]
+    NetInfo[Collect local network info]
+    ARPScan[Scan ARP table for LAN devices]
+    DNSDiscover[Discover DNS entries via SNMP/UPnP]
+    RouterID[Detect router make/model]
+    FirmwareDetect[Extract firmware version]
+    CVELookup[Match firmware to local CVE DB]
+    SSHBrute[Try default router SSH credentials]
+    NmapScan[Run Nmap SYN scan + OS detect]
+    NetcatStart[Start Netcat (port 6666)]
+    NgrokStart[Start Ngrok (TCP 6667, HTTP 80)]
+    Export[Export results (JSON, TXT)]
+    Notify[Push alerts if issues]
+    GUI[Optional: Launch Tkinter GUI]
+
+    Start --> Config --> NetInfo
+    NetInfo --> ARPScan --> DNSDiscover --> RouterID --> FirmwareDetect
+    FirmwareDetect --> CVELookup --> SSHBrute
+    CVELookup --> NmapScan --> NetcatStart --> NgrokStart
+    NgrokStart --> Export --> Notify --> GUI
+
+
+⸻
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## TODO: 
 ```
 **Add auto-search** for firmware bugs and auto ssh with firmware default passwords
