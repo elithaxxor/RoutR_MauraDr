@@ -26,6 +26,20 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Implement basic unit tests for Python modules and shell scripts.
 - Add CI configuration to run tests on each commit.
 
+These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
+
+## 7. Modular Plugin System
+- Design a lightweight plugin interface so new enumeration or exploitation modules can be dropped in without modifying core code.
+- Allow community-contributed modules to extend scanning capabilities.
+
+## 8. Offline Mode and Data Export
+- Enable running all scans without internet connectivity, storing results locally for later upload.
+- Provide export options for JSON and CSV to integrate with other tools.
+
+## 9. Dynamic Configuration Management
+- Combine existing INI and YAML files into a single config loader that supports overrides from environment variables.
+- Document sample configs for common deployment scenarios.
+
 
 ## 7. Automated SSH Access with Default Credentials
 - After detecting router details, optionally attempt to log in via SSH using
