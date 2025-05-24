@@ -70,6 +70,7 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Collect baseline network metrics and use simple heuristics to flag unusual activity.
 - Provide summary reports highlighting new devices or unexpected open ports.
 
+
 ## 18. Automated Firmware Bug Search
 - Combine firmware detection with offline CVE data to flag known exploits automatically.
 - Attempt SSH login with default credentials when a vulnerable firmware version is found.
@@ -81,3 +82,4 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 ## 20. Community Plugin Repository
 - Allow installation of third-party scanning modules from a curated list.
 - Provide version checks and signatures to maintain security when fetching plugins.
+
