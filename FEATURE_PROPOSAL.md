@@ -29,6 +29,18 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
 
 ## 7. Modular Plugin System
+
+- Allow third-party extensions to register new scanning or reporting features.
+- Provide a `plugins` directory with automatic discovery at runtime.
+
+## 8. Offline Mode with Export
+- Enable execution without network connectivity using cached data.
+- Offer utilities to export scan results to JSON for later review.
+
+## 9. Dynamic Configuration Reload
+- Support reloading configuration files without restarting the service.
+- Useful for rapidly iterating on scan parameters in production.
+=======
 - Design a lightweight plugin interface so new enumeration or exploitation modules can be dropped in without modifying core code.
 - Allow community-contributed modules to extend scanning capabilities.
 
@@ -60,3 +72,4 @@ These enhancements aim to make RoutR_MauraDr more powerful and user-friendly whi
 
 
 These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
+
