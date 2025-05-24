@@ -1,7 +1,15 @@
+# Python artifacts
 __pycache__/
-*.pyc
-
-
+.pytest_cache/
+*.py[cod]
 *.pyo
 *.pyd
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Environment files
+.env
 
