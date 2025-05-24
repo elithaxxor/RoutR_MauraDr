@@ -1,7 +1,6 @@
 from .config import config
 from .logging import setup_logger
 from .utils import check_dependencies, validate_ip, validate_cidr, export_results
-from .plugins import load_plugins
 from .scanning import discover_smb_hosts, run_nmap_scan
 from .enumeration import enumerate_lan_hosts
 from .scoring import calculate_vulnerability_score, generate_remediation
@@ -31,19 +30,13 @@ def main():
         logger.error(f"Dependency check failed: {e}")
         sys.exit(1)
 
-<<<<<<< HEAD
-    # Load optional plugins
+    # Load optional plugins using the plugin loader
     for plugin in load_plugins():
         try:
             plugin.register()
             logger.info(f"Loaded plugin: {plugin.name}")
         except Exception as e:
             logger.error(f"Failed to load plugin {plugin.name}: {e}")
-=======
-    plugins = load_plugins(os.path.join(os.path.dirname(__file__), 'plugins'))
-    if plugins:
-        logger.info(f"Loaded plugins: {', '.join(plugins.keys())}")
->>>>>>> main_pi
 
     while True:
         print("\n=== SMB-Scor3 MAIN MENU ===")

@@ -49,3 +49,16 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 ## 12. Expanded CVE Dataset Integration
 - Extend the vulnerability lookup to include community-maintained IoT and router exploit databases.
 - Allow offline synchronization of CVE data so scans work without Internet access.
+
+## 13. SMB Hash Backup and Alerting
+- Leverage the new `web/tooling/smb_hash.py` script to automatically back up Samba password hashes.
+- Provide a CLI option and REST endpoint to schedule periodic backups.
+- Notify administrators when hash files are modified unexpectedly.
+
+## 14. Scheduled Task Automation
+- Integrate a lightweight scheduler to periodically run scans and hash backups.
+- Offer CLI commands to list, add, and remove scheduled jobs.
+
+## 15. Notification Integrations
+- Send scan summaries and important alerts via email or Slack.
+- Allow configuration of multiple notification channels.
