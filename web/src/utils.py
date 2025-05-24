@@ -3,6 +3,7 @@ import shutil
 import ipaddress
 import re
 import os
+import json
 
 def check_dependencies():
     """
@@ -57,3 +58,10 @@ def validate_port(port):
 def validate_username(username):
     """Validate if the username contains only alphanumeric characters and underscores."""
     return bool(re.match(r'^[a-zA-Z0-9_]+$', username))
+
+
+def export_results(data, path="scan_results.json"):
+    """Export dictionary results to a JSON file."""
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+    return path
