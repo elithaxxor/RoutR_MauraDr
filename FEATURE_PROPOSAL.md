@@ -26,6 +26,17 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Implement basic unit tests for Python modules and shell scripts.
 - Add CI configuration to run tests on each commit.
 
+<<<<<<< HEAD
+## 7. Plugin Architecture
+- Provide a `plugins/` directory where custom modules can be added.
+- Plugins are discovered and loaded at runtime to extend scanning features.
+
+## 8. Offline Results Export
+- Offer a helper function to write scan output to JSON or CSV files.
+- Allows reviewing findings on systems without network access.
+
+These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
+=======
 These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
 
 ## 7. Modular Plugin System
@@ -73,3 +84,4 @@ These enhancements aim to make RoutR_MauraDr more powerful and user-friendly whi
 
 These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
 
+>>>>>>> main_pi

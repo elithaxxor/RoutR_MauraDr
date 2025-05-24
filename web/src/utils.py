@@ -3,6 +3,7 @@ import shutil
 import ipaddress
 import re
 import os
+import json
 
 def check_dependencies():
     """
@@ -59,8 +60,16 @@ def validate_username(username):
     return bool(re.match(r'^[a-zA-Z0-9_]+$', username))
 
 
+<<<<<<< HEAD
+def export_results(data, path="scan_results.json"):
+    """Export dictionary results to a JSON file."""
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+    return path
+=======
 def export_results(data: dict, output_file: str) -> None:
     """Export scan results to a JSON file for offline analysis."""
     import json
     with open(output_file, 'w') as f:
         json.dump(data, f, indent=2)
+>>>>>>> main_pi
