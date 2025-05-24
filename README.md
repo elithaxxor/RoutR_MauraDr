@@ -57,6 +57,18 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
   - Drop new scanning modules into `plugins/` and they load automatically.
 - **Offline Results Export**
   - Save scan data to a JSON file for later review.
+- **Desktop GUI**
+  - Launch `web/src/gui.py` for a basic Tkinter interface to run scans and view logs.
+- **External Scanner Integration**
+  - Optional hooks for OpenVAS and Nessus to perform deeper vulnerability analysis.
+- **Firmware Update Checks**
+  - Compare detected router firmware with cached vendor data and alert when updates exist.
+- **Adaptive Scan Scheduling**
+  - Schedule recurring scans that adjust frequency based on previous scores.
+- **Mobile Notifications**
+  - Push critical alerts via Pushbullet when configured.
+- **Third-Party Scan Import**
+  - Import results from Shodan or Censys to correlate with local findings.
 
 ---
 
@@ -114,6 +126,8 @@ Before running the program, ensure that you have set up the necessary configurat
      - In `config.ini`, ensure the `path` under `[database]` points to the correct database file (default: `smb_enum.db`).
    - **Network CIDR**:
      - In `config.yaml`, update the `default_cidr` under `network` if your network's IP range differs from the default (`192.168.1.0/24`).
+   - **Shodan API Key**:
+     - In `config.json`, set `shodan_api_key` to your personal API token to enable third-party scan imports.
 
 5. **Save Changes**:
 6. 
