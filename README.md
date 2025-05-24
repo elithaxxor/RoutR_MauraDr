@@ -41,7 +41,7 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 ⸻
 
 🔁 Feature Flowchart
-
+```
 flowchart TD
     Start([Start NetVision])
     Config[Load config.yaml & config.ini]
@@ -64,7 +64,7 @@ flowchart TD
     FirmwareDetect --> CVELookup --> SSHBrute
     CVELookup --> NmapScan --> NetcatStart --> NgrokStart
     NgrokStart --> Export --> Notify --> GUI
-
+```
 
 ⸻
 
