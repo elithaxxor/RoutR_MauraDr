@@ -26,6 +26,24 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Implement basic unit tests for Python modules and shell scripts.
 - Add CI configuration to run tests on each commit.
 
+<<<<<<< HEAD
+These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
+
+## 7. Modular Plugin Framework
+- Allow new scanning modules to be dropped into a `plugins/` directory and loaded dynamically.
+- Provide hooks for enumeration, scoring, and reporting extensions.
+
+## 8. Offline Results Export
+- Include a command to export scan results to JSON for analysis on systems without network access.
+
+## 9. Dynamic Configuration Reload
+- Implement a signal or command that reloads configuration files at runtime without restarting the service.
+
+## 10. Enhanced Error Handling
+- Add structured logging and exceptions for clearer bug reports.
+- Provide unit tests covering critical modules.  
+  _Note: Please clarify whether these unit tests are separate from those described in Section 6, or if they expand upon them, to avoid confusion regarding test coverage scope._
+=======
 ## 7. Modular Plugin Architecture
 - Provide a `plugins/` directory where custom modules can be added.
 - Plugins are discovered and loaded at runtime to extend scanning features.
@@ -72,4 +90,5 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Collect baseline network metrics and use simple heuristics to flag unusual activity.
 - Provide summary reports highlighting new devices or unexpected open ports.
 
+>>>>>>> 7071b969d5d49560f2d6f35c8de4ed9505a8791c
 
