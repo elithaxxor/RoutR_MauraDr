@@ -70,6 +70,13 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Collect baseline network metrics and use simple heuristics to flag unusual activity.
 - Provide summary reports highlighting new devices or unexpected open ports.
 
+## 18. Firmware Bug Search Automation
+- Automatically cross-reference router firmware versions with known vulnerability lists.
+- Highlight issues directly in the CLI output and dashboard.
+
+## 19. Visual Network Mapping
+- Generate interactive network topology maps from scan results.
+- Offer export options to PNG or HTML for easy sharing.
 
 ## 18. Automated Firmware Bug Search
 - Combine firmware detection with offline CVE data to flag known exploits automatically.
@@ -83,3 +90,6 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Allow installation of third-party scanning modules from a curated list.
 - Provide version checks and signatures to maintain security when fetching plugins.
 
+## 20. Community Plugin Repository
+- Package plugins with metadata so they can be shared easily.
+- Provide a helper script to submit plugins to a community repository.

@@ -1,6 +1,12 @@
 from .config import config
 from .logging import setup_logger
-from .utils import check_dependencies, validate_ip, validate_cidr, export_results
+from .utils import (
+    check_dependencies,
+    validate_ip,
+    validate_cidr,
+    export_results,
+    export_results_csv,
+)
 from .scanning import discover_smb_hosts, run_nmap_scan
 from .enumeration import enumerate_lan_hosts
 from .scoring import calculate_vulnerability_score, generate_remediation
@@ -71,6 +77,7 @@ def main():
                 # Enumerate hosts
                 host_data = enumerate_lan_hosts(hosts, intensity)
                 export_results(host_data, 'scan_results.json')
+                export_results_csv(host_data, 'scan_results.csv')
 
                 # Score and report
                 for host, data in host_data.items():

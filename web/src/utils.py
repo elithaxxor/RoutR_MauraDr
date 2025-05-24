@@ -68,3 +68,22 @@ def export_results(data: dict, output_file: str = "scan_results.json") -> str:
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
     return output_file
+
+
+def export_results_csv(data: dict, output_file: str = "scan_results.csv") -> str:
+    """Export scan results to a CSV file."""
+    if not data:
+        return output_file
+    import csv
+
+    # Determine headers from first host's data keys if available
+    first_key = next(iter(data))
+    headers = ["host"] + list(data[first_key].keys())
+
+    with open(output_file, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(headers)
+        for host, info in data.items():
+            row = [host] + [info.get(h, "") for h in headers[1:]]
+            writer.writerow(row)
+    return output_file
