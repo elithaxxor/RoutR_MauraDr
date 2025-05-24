@@ -11,9 +11,7 @@ class Plugin:
         self.name = getattr(module, 'NAME', module.__name__)
 
     def register(self):
-        if hasattr(self.module, 'register'):
-            return self.module.register()
-        return None
+        return self.module.register() if hasattr(self.module, 'register') else None
 
 
 def load_plugins():
