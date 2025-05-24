@@ -1,0 +1,7 @@
+{
+  "ExampleVendor": {
+    "2.0.0": [
+      {"cve": "CVE-2021-0001", "description": "Example vulnerability", "severity": "HIGH"}
+    ]
+  }
+}
