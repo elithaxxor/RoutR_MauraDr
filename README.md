@@ -31,8 +31,8 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 ---
 
 ## **Features** <a id="features"></a>  
-- **Local Network Data**  
-  - Local IP, Router IP, WAN IP, DNS servers, Subnet mask, Router MAC, etc.  
+- **Local Network Data**
+  - Local IP, Router IP, WAN IP, DNS servers, Subnet mask, Router MAC, etc. (implemented in `web/src/network_info.py`)
 - **ARP Table Scan**  
   - Resolves device IPs, MAC addresses, and hostnames on the local LAN.  
 - **Router DNS Table**  
@@ -44,19 +44,29 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 - **Optional Firmware CVE Lookup**
   - Uses an offline CVE database to search for vulnerabilities in detected firmware.
 - **Default Credential SSH Attempts**
-  - Tries common username/password pairs when enabled to identify weak router security.
+  - Tries common username/password pairs when enabled to identify weak router security (see `web/src/router_ssh.py`).
 - **Stealthy Quick Port Scan**
-  - Uses **nmap** for a SYN scan on **top 10 ports**, plus **OS detection** (requires `sudo`).  
-  - Saves open ports to both `.txt` and `.json` for easy review.  
+  - Uses **nmap** for a SYN scan on **top 10 ports**, plus **OS detection** (requires `sudo`).
+  - Saves open ports to both `.txt` and `.json` for easy review via `web/src/quick_scan.py`.
 - **Netcat Listener**
-  - Listens on **port 6666**.
+  - Listens on **port 6666** (handled by `web/src/net_services.py`).
 - **Ngrok Tunnels**
   - **TCP** tunnel for port **6667**
-  - **HTTP** tunnel for port **80**
+  - **HTTP** tunnel for port **80** (spawned via `web/src/net_services.py`)
 - **Plugin System**
   - Drop new scanning modules into `plugins/` and they load automatically.
 - **Offline Results Export**
   - Save scan data to a JSON file for later review.
+- **Desktop GUI**
+  - Launch `web/src/gui.py` for a basic Tkinter interface to run scans and view logs.
+- **External Scanner Integration**
+  - Optional hooks for OpenVAS and Nessus to perform deeper vulnerability analysis.
+- **Firmware Update Checks**
+  - Compare detected router firmware with cached vendor data and alert when updates exist.
+- **Adaptive Scan Scheduling**
+  - Schedule recurring scans that adjust frequency based on previous scores.
+- **Mobile Notifications**
+  - Push critical alerts via Pushbullet when configured.
 
 ---
 
