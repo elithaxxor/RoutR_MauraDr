@@ -84,4 +84,6 @@ These enhancements aim to make RoutR_MauraDr more powerful and user-friendly whi
 
 These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
 
->>>>>>> main_pi
+## 10. REST API Usage Logging
+- Record all API requests and responses for auditing purposes.
+- Provide optional real-time alerts when administrative actions occur.
