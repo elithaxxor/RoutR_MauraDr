@@ -4,9 +4,20 @@ import unittest
 MODULES = [
     'web.src.gui',
     'web.src.integrations.vuln_scanners',
+
     'web.src.integrations.shodan_client',
     'web.src.firmware',
     'web.src.scheduler',
+
+    'web.src.firmware',
+    'web.src.scheduler',
+    'web.src.notifications',
+    'web.src.network_info',
+    'web.src.router_ssh',
+    'web.src.quick_scan',
+    'web.src.net_services'
+
+
     'web.src.notifications'
 ]
 
