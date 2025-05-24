@@ -55,6 +55,15 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Provide a CLI option and REST endpoint to schedule periodic backups.
 - Notify administrators when hash files are modified unexpectedly.
 
+
+## 14. Scheduled Task Automation
+- Integrate a lightweight scheduler to periodically run scans and hash backups.
+- Offer CLI commands to list, add, and remove scheduled jobs.
+
+## 15. Notification Integrations
+- Send scan summaries and important alerts via email or Slack.
+- Allow configuration of multiple notification channels.
+
 ## 14. Real-Time Alerting Dashboard
 - Implement WebSocket support in the web interface to push scan results and alerts instantly to connected clients.
 - Allow users to customize alert thresholds and notification methods.
@@ -62,4 +71,5 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 ## 15. Anomaly Detection Engine
 - Collect baseline network metrics and use simple heuristics to flag unusual activity.
 - Provide summary reports highlighting new devices or unexpected open ports.
+
 

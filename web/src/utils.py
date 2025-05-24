@@ -60,16 +60,11 @@ def validate_username(username):
     return bool(re.match(r'^[a-zA-Z0-9_]+$', username))
 
 
-<<<<<<< HEAD
-def export_results(data, path="scan_results.json"):
-    """Export dictionary results to a JSON file."""
-    with open(path, "w", encoding="utf-8") as f:
+def export_results(data: dict, output_file: str = "scan_results.json") -> str:
+    """Export scan results to a JSON file for offline analysis.
+
+    Returns the path to the written file.
+    """
+    with open(output_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
-    return path
-=======
-def export_results(data: dict, output_file: str) -> None:
-    """Export scan results to a JSON file for offline analysis."""
-    import json
-    with open(output_file, 'w') as f:
-        json.dump(data, f, indent=2)
->>>>>>> main_pi
+    return output_file
