@@ -1,74 +1,15 @@
 #!/bin/bash
 # Basic LDAP and DNS configuration checks
 
-<<<<<<< HEAD
-# Simple LDAP and DNS checks
-
-info() { echo "[INFO] $1"; }
-error() { echo "[ERROR] $1"; }
-success() { echo "[SUCCESS] $1"; }
-
-check_service() {
-    local svc="$1"
-    if systemctl is-active --quiet "$svc"; then
-        success "$svc is running"
-    else
-        error "$svc is not running"
-    fi
-}
-
-test_ldap_connection() {
-    if ldapsearch -x -LLL -H ldap://localhost -b "" >/dev/null 2>&1; then
-        success "LDAP server reachable"
-    else
-        error "Unable to connect to LDAP server"
-    fi
-}
-
-test_dns_resolution() {
-    local host_to_check="example.com"
-    if host "$host_to_check" >/dev/null 2>&1; then
-        success "DNS resolution works for $host_to_check"
-    else
-        error "DNS resolution failed for $host_to_check"
-    fi
-}
-
-check_dns_netstat_ports() {
-    if netstat -tuln | grep -q ':53'; then
-        success "DNS service listening on port 53"
-    else
-        error "DNS service not listening on port 53"
-    fi
-}
-
-main() {
-    info "Checking LDAP and DNS configuration..."
-    check_service "slapd"
-    test_ldap_connection
-    test_dns_resolution
-    check_dns_netstat_ports
-}
-
-main "$@"
-=======
 GREEN="\e[32m"
 DARK_GREEN="\e[32;1m"
 BLUE="\e[34m"
 RED="\e[31m"
 NC="\e[0m"
 
-info() {
-  echo -e "${BLUE}[INFO] $1${NC}"
-}
-
-error() {
-  echo -e "${RED}[ERROR] $1${NC}"
-}
-
-success() {
-  echo -e "${DARK_GREEN}[SUCCESS] $1${NC}"
-}
+info() { echo -e "${BLUE}[INFO] $1${NC}"; }
+error() { echo -e "${RED}[ERROR] $1${NC}"; }
+success() { echo -e "${DARK_GREEN}[SUCCESS] $1${NC}"; }
 
 check_service() {
   local service_name="$1"
@@ -154,6 +95,7 @@ add_ldap_user() {
 }
 
 # Main execution
+info "Checking LDAP and DNS configuration..."
 check_service "slapd"
 check_ldap_config_files
 test_ldap_connection
@@ -163,4 +105,3 @@ check_dns_netstat_ports
 add_ldap_user
 
 echo "LDAP, DNS, network configuration check complete."
->>>>>>> 7071b969d5d49560f2d6f35c8de4ed9505a8791c
