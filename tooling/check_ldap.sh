@@ -83,8 +83,19 @@ test_dns_resolution() {
 
 check_dns_netstat_ports() {
   local dns_port=53
-  info "Checking if DNS is listening on TCP and UDP port $dns_port..."
-  netstat -tuln | grep -E ":${dns_port}\s" >/dev/null 2>&1 && success "DNS is listening on port $dns_port." || error "DNS is not listening on port $dns_port."
+  info "Checking if DNS is listening on TCP port $dns_port..."
+  if ss -tln | awk '{print $4}' | grep -Eq ":${dns_port}$"; then
+    success "DNS is listening on TCP port $dns_port."
+  else
+    error "DNS is not listening on TCP port $dns_port."
+  fi
+
+  info "Checking if DNS is listening on UDP port $dns_port..."
+  if ss -uln | awk '{print $5}' | grep -Eq ":${dns_port}$"; then
+    success "DNS is listening on UDP port $dns_port."
+  else
+    error "DNS is not listening on UDP port $dns_port."
+  fi
 }
 
 add_ldap_user() {
