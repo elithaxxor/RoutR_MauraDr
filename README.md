@@ -71,13 +71,20 @@ flowchart TD
 
 
 
+```classDiagram
+    class ScanGUI {
+        <<Tkinter GUI>>
+        -cidr_entry: tk.Entry
+        -log_box: scrolledtext.ScrolledText
+        +__init__()
+        +create_widgets()
+        +start_scan()
+        +run_scan(cidr: string)
+        +append_log(text: string)
+    }
+    note for ScanGUI "Inherits from tk.Tk"
 
-
-
-
-
-
-
+```
 
 
 
