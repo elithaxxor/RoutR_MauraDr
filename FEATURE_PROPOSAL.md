@@ -40,5 +40,6 @@ These enhancements aim to make RoutR_MauraDr more powerful and user-friendly whi
 
 ## 10. Enhanced Error Handling
 - Add structured logging and exceptions for clearer bug reports.
-- Provide unit tests covering critical modules.
+- Provide unit tests covering critical modules.  
+  _Note: Please clarify whether these unit tests are separate from those described in Section 6, or if they expand upon them, to avoid confusion regarding test coverage scope._
 
