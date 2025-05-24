@@ -15,3 +15,5 @@ server:
 
 jwt:
   secret_key: "your-secret-key"
+shodan_api_key: ""
+default_shodan_query: "net:192.168.1.0/24"
