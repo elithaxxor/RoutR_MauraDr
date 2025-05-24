@@ -1,9 +1,6 @@
 #!/bin/bash
 # Wrapper script to run LDAP configuration checks
 
-<<<<<<< HEAD
-# Check LDAP client and server configuration
-
 info() { echo "[INFO] $1"; }
 error() { echo "[ERROR] $1"; }
 success() { echo "[SUCCESS] $1"; }
@@ -31,10 +28,10 @@ check_config_files() {
 main() {
     info "Checking LDAP configuration files..."
     check_config_files
+    local helper="$(dirname "$0")/check_ldap.sh"
+    if [ -x "$helper" ]; then
+        "$helper"
+    fi
 }
 
 main "$@"
-=======
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-"$SCRIPT_DIR/check_ldap.sh"
->>>>>>> 7071b969d5d49560f2d6f35c8de4ed9505a8791c
