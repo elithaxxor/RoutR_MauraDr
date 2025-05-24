@@ -78,4 +78,6 @@ def generate_remediation(host_data):
         remediation.append("Disable SMBv1 on the host to prevent exploitation (e.g., EternalBlue).")
     if host_data["plaintext_creds"] > 0:
         remediation.append("Enforce strong password policies and disable accounts with no passwords.")
+    if host_data["missing_patches"] > 0:
+        remediation.append("Apply available security patches to the system.")
     return remediation

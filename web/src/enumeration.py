@@ -1,6 +1,7 @@
 from .utils import validate_ip
 from .logging import setup_logger
 from .config import config
+from .scanning import run_nmap_scan
 import subprocess
 
 logger = setup_logger(config['database'])
@@ -50,9 +51,8 @@ def enumerate_lan_hosts(hosts, intensity="low"):
                     host_data[ip]["plaintext_creds"] += 1
 
             elif intensity == "high":
-                # Add aggressive scanning (e.g., null session checks)
                 logger.info(f"[High Intensity] Running aggressive enumeration on {ip}")
-                # Placeholder for additional tools or scripts
+                host_data[ip] = run_nmap_scan(ip, script_category="vuln", host_data=host_data[ip])
 
         except subprocess.CalledProcessError as e:
             logger.error(f"Enumeration failed for {ip}: {e}")
