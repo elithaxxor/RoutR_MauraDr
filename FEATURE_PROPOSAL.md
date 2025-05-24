@@ -26,17 +26,16 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Implement basic unit tests for Python modules and shell scripts.
 - Add CI configuration to run tests on each commit.
 
-## 7. Modular Plugin Architecture
-- Provide a `plugins/` directory where custom modules can be added.
-- Plugins are discovered and loaded at runtime to extend scanning features.
+## 7. Modular Plugin Framework
+- Allow new scanning modules to be dropped into a `plugins/` directory and loaded dynamically.
+- Provide hooks for enumeration, scoring, and reporting extensions.
 
-## 8. Offline Mode and Data Export
-- Enable execution without network connectivity using cached data.
-- Offer utilities to export scan results to JSON or CSV for later review.
+## 8. Offline Results Export
+- Include a command to export scan results to JSON or CSV for analysis on systems without network access.
 
 ## 9. Dynamic Configuration Management
-- Combine existing INI and YAML files into a single config loader that supports overrides from environment variables.
-- Document sample configs for common deployment scenarios.
+- Implement a mechanism to reload configuration files at runtime without restarting the service.
+- Support overrides from environment variables and document sample configs for common scenarios.
 
 ## 10. REST API Usage Logging
 - Record all API requests and responses for auditing purposes.
@@ -51,10 +50,9 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Allow offline synchronization of CVE data so scans work without Internet access.
 
 ## 13. SMB Hash Backup and Alerting
-- Leverage the new `web/tooling/smb_hash.py` script to automatically back up Samba password hashes.
+- Leverage the `web/tooling/smb_hash.py` script to automatically back up Samba password hashes.
 - Provide a CLI option and REST endpoint to schedule periodic backups.
 - Notify administrators when hash files are modified unexpectedly.
-
 
 ## 14. Scheduled Task Automation
 - Integrate a lightweight scheduler to periodically run scans and hash backups.
@@ -64,12 +62,34 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Send scan summaries and important alerts via email or Slack.
 - Allow configuration of multiple notification channels.
 
-## 14. Real-Time Alerting Dashboard
+## 16. Real-Time Alerting Dashboard
 - Implement WebSocket support in the web interface to push scan results and alerts instantly to connected clients.
 - Allow users to customize alert thresholds and notification methods.
 
-## 15. Anomaly Detection Engine
+## 17. Anomaly Detection Engine
 - Collect baseline network metrics and use simple heuristics to flag unusual activity.
 - Provide summary reports highlighting new devices or unexpected open ports.
 
+## 18. Firmware Bug Search Automation
+- Automatically cross-reference router firmware versions with known vulnerability lists.
+- Highlight issues directly in the CLI output and dashboard.
 
+## 19. Visual Network Mapping
+- Generate interactive network topology maps from scan results.
+- Offer export options to PNG or HTML for easy sharing.
+
+## 18. Automated Firmware Bug Search
+- Combine firmware detection with offline CVE data to flag known exploits automatically.
+- Attempt SSH login with default credentials when a vulnerable firmware version is found.
+
+## 19. Visual Network Mapping
+- Generate a graphical map of discovered hosts and connections for easier analysis.
+- Offer export options to PNG or SVG for integration into reports.
+
+## 20. Community Plugin Repository
+- Allow installation of third-party scanning modules from a curated list.
+- Provide version checks and signatures to maintain security when fetching plugins.
+
+## 20. Community Plugin Repository
+- Package plugins with metadata so they can be shared easily.
+- Provide a helper script to submit plugins to a community repository.

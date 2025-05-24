@@ -7,17 +7,9 @@ BLUE="\e[34m"
 RED="\e[31m"
 NC="\e[0m"
 
-info() {
-  echo -e "${BLUE}[INFO] $1${NC}"
-}
-
-error() {
-  echo -e "${RED}[ERROR] $1${NC}"
-}
-
-success() {
-  echo -e "${DARK_GREEN}[SUCCESS] $1${NC}"
-}
+info() { echo -e "${BLUE}[INFO] $1${NC}"; }
+error() { echo -e "${RED}[ERROR] $1${NC}"; }
+success() { echo -e "${DARK_GREEN}[SUCCESS] $1${NC}"; }
 
 check_service() {
   local service_name="$1"
@@ -103,6 +95,7 @@ add_ldap_user() {
 }
 
 # Main execution
+info "Checking LDAP and DNS configuration..."
 check_service "slapd"
 check_ldap_config_files
 test_ldap_connection

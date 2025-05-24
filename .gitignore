@@ -10,6 +10,10 @@ build/
 dist/
 *.egg-info/
 
+# Virtual environments
+venv/
+
 # Environment files
 .env
-
+# Database files generated during tests
+smb_enum.db
