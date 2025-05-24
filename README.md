@@ -57,6 +57,20 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
   - Drop new scanning modules into `plugins/` and they load automatically.
 - **Offline Results Export**
   - Save scan data to a JSON file for later review.
+- **Desktop GUI**
+  - Launch `web/src/gui.py` for a basic Tkinter interface to run scans and view logs.
+- **External Scanner Integration**
+  - Optional hooks for OpenVAS and Nessus to perform deeper vulnerability analysis.
+- **Firmware Update Checks**
+  - Compare detected router firmware with cached vendor data and alert when updates exist.
+- **Adaptive Scan Scheduling**
+  - Schedule recurring scans that adjust frequency based on previous scores.
+- **Mobile Notifications**
+  - Push critical alerts via Pushbullet when configured.
+- **Shodan Integration**
+  - Import scan data from the Shodan API when a key is provided.
+- **Wigle Wi-Fi Lookup**
+  - Query Wigle's API to correlate router MAC addresses with nearby wireless networks.
 
 ---
 
@@ -83,12 +97,12 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 
 ## **Configuration Setup** <a id="configuration-setup"></a>
 
-Before running the program, ensure that you have set up the necessary configuration files. The application requires two configuration files: `config.ini` and `config.yaml`.
+Before running the program, ensure that you have set up the necessary configuration files. The application uses `config.ini`, `config.yaml`, and `config.json`.
 
 ### **Steps to Configure**
 
 1. **Locate the Config Files**:
-   - Both `config.ini` and `config.yaml` are located in the `web` directory.
+   - `config.ini`, `config.yaml`, and `config.json` are all located in the `web` directory.
 
 2. **Edit the Config Files**:
    - Open the files in a text editor of your choice and update the following variables:
@@ -105,6 +119,14 @@ Before running the program, ensure that you have set up the necessary configurat
      secret_key: "your-secret-key"  # Replace 'your-secret-key' with a strong, secure key
    ```
 
+   **In `config.json`**:
+   ```json
+   {
+       "shodan_api_key": "your-shodan-key",
+       "wigle": {"username": "user", "password": "pass"}
+   }
+   ```
+
 3. **Variables to Adjust**:
 4. 
    - **JWT Secret Key**:
@@ -114,6 +136,10 @@ Before running the program, ensure that you have set up the necessary configurat
      - In `config.ini`, ensure the `path` under `[database]` points to the correct database file (default: `smb_enum.db`).
    - **Network CIDR**:
      - In `config.yaml`, update the `default_cidr` under `network` if your network's IP range differs from the default (`192.168.1.0/24`).
+   - **Shodan API Key**:
+     - In `config.json`, set `shodan_api_key` if you want to import results from Shodan.
+   - **Wigle Credentials**:
+     - In `config.json`, provide your Wigle `username` and `password` under the `wigle` section.
 
 5. **Save Changes**:
 6. 
