@@ -57,3 +57,10 @@ def validate_port(port):
 def validate_username(username):
     """Validate if the username contains only alphanumeric characters and underscores."""
     return bool(re.match(r'^[a-zA-Z0-9_]+$', username))
+
+
+def export_results(data: dict, output_file: str) -> None:
+    """Export scan results to a JSON file for offline analysis."""
+    import json
+    with open(output_file, 'w') as f:
+        json.dump(data, f, indent=2)
