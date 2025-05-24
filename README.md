@@ -150,8 +150,15 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 - **Mobile Notifications**
   - Push critical alerts via Pushbullet when configured.
 
+- **Shodan Integration**
+  - Import scan data from the Shodan API when a key is provided.
+- **Wigle Wi-Fi Lookup**
+  - Query Wigle's API to correlate router MAC addresses with nearby wireless networks.
+
+
 - **Third-Party Scan Import**
   - Import results from Shodan or Censys to correlate with local findings.
+
 
 
 
@@ -180,12 +187,12 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 
 ## **Configuration Setup** <a id="configuration-setup"></a>
 
-Before running the program, ensure that you have set up the necessary configuration files. The application requires two configuration files: `config.ini` and `config.yaml`.
+Before running the program, ensure that you have set up the necessary configuration files. The application uses `config.ini`, `config.yaml`, and `config.json`.
 
 ### **Steps to Configure**
 
 1. **Locate the Config Files**:
-   - Both `config.ini` and `config.yaml` are located in the `web` directory.
+   - `config.ini`, `config.yaml`, and `config.json` are all located in the `web` directory.
 
 2. **Edit the Config Files**:
    - Open the files in a text editor of your choice and update the following variables:
@@ -202,6 +209,14 @@ Before running the program, ensure that you have set up the necessary configurat
      secret_key: "your-secret-key"  # Replace 'your-secret-key' with a strong, secure key
    ```
 
+   **In `config.json`**:
+   ```json
+   {
+       "shodan_api_key": "your-shodan-key",
+       "wigle": {"username": "user", "password": "pass"}
+   }
+   ```
+
 3. **Variables to Adjust**:
 4. 
    - **JWT Secret Key**:
@@ -212,7 +227,13 @@ Before running the program, ensure that you have set up the necessary configurat
    - **Network CIDR**:
      - In `config.yaml`, update the `default_cidr` under `network` if your network's IP range differs from the default (`192.168.1.0/24`).
    - **Shodan API Key**:
+
+     - In `config.json`, set `shodan_api_key` if you want to import results from Shodan.
+   - **Wigle Credentials**:
+     - In `config.json`, provide your Wigle `username` and `password` under the `wigle` section.
+
      - In `config.json`, set `shodan_api_key` to your personal API token to enable third-party scan imports.
+
 
 5. **Save Changes**:
 6. 
