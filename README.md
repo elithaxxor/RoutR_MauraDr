@@ -57,6 +57,16 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
   - Drop new scanning modules into `plugins/` and they load automatically.
 - **Offline Results Export**
   - Save scan data to a JSON file for later review.
+- **Desktop GUI**
+  - Launch `web/src/gui.py` for a basic Tkinter interface to run scans and view logs.
+- **External Scanner Integration**
+  - Optional hooks for OpenVAS and Nessus to perform deeper vulnerability analysis.
+- **Firmware Update Checks**
+  - Compare detected router firmware with cached vendor data and alert when updates exist.
+- **Adaptive Scan Scheduling**
+  - Schedule recurring scans that adjust frequency based on previous scores.
+- **Mobile Notifications**
+  - Push critical alerts via Pushbullet when configured.
 
 ---
 
