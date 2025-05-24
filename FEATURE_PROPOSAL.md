@@ -26,6 +26,7 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Implement basic unit tests for Python modules and shell scripts.
 - Add CI configuration to run tests on each commit.
 
+<<<<<<< HEAD
 These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.
 
 ## 7. Modular Plugin Framework
@@ -42,4 +43,52 @@ These enhancements aim to make RoutR_MauraDr more powerful and user-friendly whi
 - Add structured logging and exceptions for clearer bug reports.
 - Provide unit tests covering critical modules.  
   _Note: Please clarify whether these unit tests are separate from those described in Section 6, or if they expand upon them, to avoid confusion regarding test coverage scope._
+=======
+## 7. Modular Plugin Architecture
+- Provide a `plugins/` directory where custom modules can be added.
+- Plugins are discovered and loaded at runtime to extend scanning features.
+
+## 8. Offline Mode and Data Export
+- Enable execution without network connectivity using cached data.
+- Offer utilities to export scan results to JSON or CSV for later review.
+
+## 9. Dynamic Configuration Management
+- Combine existing INI and YAML files into a single config loader that supports overrides from environment variables.
+- Document sample configs for common deployment scenarios.
+
+## 10. REST API Usage Logging
+- Record all API requests and responses for auditing purposes.
+- Provide optional real-time alerts when administrative actions occur.
+
+## 11. Automated SSH Access with Default Credentials
+- After detecting router details, optionally attempt to log in via SSH using known default usernames and passwords.
+- Provide logging and configurable credential lists to avoid brute-force issues.
+
+## 12. Expanded CVE Dataset Integration
+- Extend the vulnerability lookup to include community-maintained IoT and router exploit databases.
+- Allow offline synchronization of CVE data so scans work without Internet access.
+
+## 13. SMB Hash Backup and Alerting
+- Leverage the new `web/tooling/smb_hash.py` script to automatically back up Samba password hashes.
+- Provide a CLI option and REST endpoint to schedule periodic backups.
+- Notify administrators when hash files are modified unexpectedly.
+
+
+## 14. Scheduled Task Automation
+- Integrate a lightweight scheduler to periodically run scans and hash backups.
+- Offer CLI commands to list, add, and remove scheduled jobs.
+
+## 15. Notification Integrations
+- Send scan summaries and important alerts via email or Slack.
+- Allow configuration of multiple notification channels.
+
+## 14. Real-Time Alerting Dashboard
+- Implement WebSocket support in the web interface to push scan results and alerts instantly to connected clients.
+- Allow users to customize alert thresholds and notification methods.
+
+## 15. Anomaly Detection Engine
+- Collect baseline network metrics and use simple heuristics to flag unusual activity.
+- Provide summary reports highlighting new devices or unexpected open ports.
+
+>>>>>>> 7071b969d5d49560f2d6f35c8de4ed9505a8791c
 

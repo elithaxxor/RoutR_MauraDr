@@ -1,8 +1,24 @@
+<<<<<<< HEAD
 __pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
 *.egg-info/
 venv/
+=======
+# Python artifacts
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Environment files
+>>>>>>> 7071b969d5d49560f2d6f35c8de4ed9505a8791c
 .env
 

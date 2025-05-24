@@ -1,9 +1,10 @@
 from .config import config
 from .logging import setup_logger
-from .utils import check_dependencies, validate_ip, validate_cidr
+from .utils import check_dependencies, validate_ip, validate_cidr, export_results
 from .scanning import discover_smb_hosts, run_nmap_scan
 from .enumeration import enumerate_lan_hosts
 from .scoring import calculate_vulnerability_score, generate_remediation
+from .plugin_loader import load_plugins
 import os
 import sys
 
@@ -28,6 +29,14 @@ def main():
     except Exception as e:
         logger.error(f"Dependency check failed: {e}")
         sys.exit(1)
+
+    # Load optional plugins using the plugin loader
+    for plugin in load_plugins():
+        try:
+            plugin.register()
+            logger.info(f"Loaded plugin: {plugin.name}")
+        except Exception as e:
+            logger.error(f"Failed to load plugin {plugin.name}: {e}")
 
     while True:
         print("\n=== SMB-Scor3 MAIN MENU ===")
@@ -61,6 +70,7 @@ def main():
 
                 # Enumerate hosts
                 host_data = enumerate_lan_hosts(hosts, intensity)
+                export_results(host_data, 'scan_results.json')
 
                 # Score and report
                 for host, data in host_data.items():
