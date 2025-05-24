@@ -6,6 +6,7 @@ class TestPluginLoader(unittest.TestCase):
         plugins = load_plugins()
         names = [p.name for p in plugins]
         self.assertIn('example', [n.lower() for n in names])
+        self.assertIn('shodanimport', [n.lower() for n in names])
 
 if __name__ == '__main__':
     unittest.main()

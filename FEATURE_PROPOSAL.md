@@ -93,3 +93,6 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 ## 20. Community Plugin Repository
 - Package plugins with metadata so they can be shared easily.
 - Provide a helper script to submit plugins to a community repository.
+## 21. Shodan Scan Import
+- Integrate a Shodan API client to import search results and correlate them with local scans.
+
