@@ -14,3 +14,9 @@ def load_config():
 
 
 config = load_config()
+
+
+def reload_config() -> None:
+    """Reload configuration from disk."""
+    global config
+    config = load_config()
