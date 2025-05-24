@@ -26,4 +26,23 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Implement basic unit tests for Python modules and shell scripts.
 - Add CI configuration to run tests on each commit.
 
+
+## 7. Automated SSH Access with Default Credentials
+- After detecting router details, optionally attempt to log in via SSH using
+  known default username and password combinations.
+- Provide logging and configurable credential lists to avoid brute-force issues.
+
+## 8. Expanded CVE Dataset Integration
+- Extend the vulnerability lookup to include community-maintained IoT and router
+  exploit databases.
+- Allow offline synchronization of CVE data so scans work without Internet
+  access.
+
+## 9. Plugin-Based Architecture
+- Refactor the tooling so that new scanning or exploitation modules can be added
+  as drop-in plugins.
+- This would let contributors experiment with additional checks without
+  modifying the core scripts.
+
+
 These enhancements aim to make RoutR_MauraDr more powerful and user-friendly while improving security and maintainability.

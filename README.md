@@ -8,8 +8,9 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 ## TODO: 
 ```
 **Add auto-search** for firmware bugs and auto ssh with firmware defualt passwords
-**Automate CVE Dialation** --> I have the code and every single CVE known to man (legally obtained); so figure a way to isolate iOT CVEs from what I have, and then automate discovery, test, enum phase. 
+**Automate CVE Dialation** --> I have the code and every single CVE known to man (legally obtained); so figure a way to isolate iOT CVEs from what I have, and then automate discovery, test, enum phase.
 ```
+See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 
 ## **Table of Contents**  
 1. [Features](#features)  
@@ -35,9 +36,13 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
   - Attempts to discover local DNS entries via SNMP, UPnP, and brute force DNS queries.  
 - **Router Make & Model**  
   - Scrapes the router’s login page for common brand keywords.  
-- **Router Firmware Detection**  
-  - Tries SNMP (`snmpwalk`), HTTP scraping, and UPnP for firmware strings.  
-- **Stealthy Quick Port Scan**  
+- **Router Firmware Detection**
+  - Tries SNMP (`snmpwalk`), HTTP scraping, and UPnP for firmware strings.
+- **Optional Firmware CVE Lookup**
+  - Uses an offline CVE database to search for vulnerabilities in detected firmware.
+- **Default Credential SSH Attempts**
+  - Tries common username/password pairs when enabled to identify weak router security.
+- **Stealthy Quick Port Scan**
   - Uses **nmap** for a SYN scan on **top 10 ports**, plus **OS detection** (requires `sudo`).  
   - Saves open ports to both `.txt` and `.json` for easy review.  
 - **Netcat Listener**  
