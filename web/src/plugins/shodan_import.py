@@ -1,5 +1,8 @@
 """Plugin to import scan results from Shodan."""
 
+
+
+
 from ..integrations import shodan_client
 from ..config import config
 
@@ -14,3 +17,4 @@ def register():
     query = config.get("default_shodan_query", "net:192.168.1.0/24")
     results = shodan_client.shodan_search(query, api_key)
     return {"count": len(results), "sample": results[:5]}
+
