@@ -96,3 +96,15 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 ## 21. Shodan Scan Import
 - Integrate a Shodan API client to import search results and correlate them with local scans.
 
+
+## 22. Machine Learning Threat Scoring
+- Implement a lightweight anomaly detection engine that learns typical network behavior and highlights suspicious deviations.
+- Display threat scores in the web dashboard to prioritize investigations.
+
+## 23. Cloud Synchronization of Scan Results
+- Provide optional integration with popular storage services (e.g., AWS S3) to back up scan history.
+- Allow teams to share findings across multiple instances of the tool.
+
+## 24. Multi-User Access Control
+- Expand the web interface to support multiple authenticated users.
+- Include role-based permissions for viewing scans, running tasks, and editing configuration.

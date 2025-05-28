@@ -1,4 +1,8 @@
 """Plugin to import scan results from Shodan."""
+
+
+
+
 from ..integrations import shodan_client
 from ..config import config
 
@@ -6,6 +10,7 @@ NAME = "ShodanImport"
 
 
 def register():
+    """Return sample results from Shodan using configured API key."""
     api_key = config.get("shodan_api_key")
     if not api_key:
         return {"error": "Shodan API key not configured"}
