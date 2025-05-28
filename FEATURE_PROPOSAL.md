@@ -78,23 +78,17 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Generate interactive network topology maps from scan results.
 - Offer export options to PNG or HTML for easy sharing.
 
-## 18. Automated Firmware Bug Search
-- Combine firmware detection with offline CVE data to flag known exploits automatically.
-- Attempt SSH login with default credentials when a vulnerable firmware version is found.
-
-## 19. Visual Network Mapping
-- Generate a graphical map of discovered hosts and connections for easier analysis.
-- Offer export options to PNG or SVG for integration into reports.
-
 ## 20. Community Plugin Repository
 - Allow installation of third-party scanning modules from a curated list.
 - Provide version checks and signatures to maintain security when fetching plugins.
 
-## 20. Community Plugin Repository
-- Package plugins with metadata so they can be shared easily.
-- Provide a helper script to submit plugins to a community repository.
 ## 21. Shodan Scan Import
 - Integrate a Shodan API client to import search results and correlate them with local scans.
+
+
+## 22. Configuration Backup and Restore
+- Add commands to back up router configuration files and verify them against baselines.
+
 
 
 ## 22. Machine Learning Threat Scoring
@@ -108,3 +102,4 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 ## 24. Multi-User Access Control
 - Expand the web interface to support multiple authenticated users.
 - Include role-based permissions for viewing scans, running tasks, and editing configuration.
+
