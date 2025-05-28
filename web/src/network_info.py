@@ -2,7 +2,13 @@
 import logging
 import subprocess
 import re
-import requests
+import platform
+import socket
+import struct
+try:
+    import requests
+except ImportError:
+    requests = None
 
 logger = logging.getLogger(__name__)
 
@@ -19,16 +25,26 @@ def _run_cmd(cmd: str) -> str:
 
 def get_local_ip() -> str:
     """Return the first non-loopback IP address."""
+    if platform.system() == 'Darwin':
+        iface = _run_cmd("route -n get default | awk '/interface:/ {print $2}'")
+        if iface:
+            return _run_cmd(f"ipconfig getifaddr {iface}")
+        return ""
     return _run_cmd("ip route get 1.1.1.1 | awk '{print $7; exit}'")
 
 
 def get_router_ip() -> str:
     """Return the default gateway IP."""
+    if platform.system() == 'Darwin':
+        return _run_cmd("route -n get default | awk '/gateway:/ {print $2}'")
     return _run_cmd("ip route | awk '/default/ {print $3; exit}'")
 
 
 def get_wan_ip() -> str:
     """Return the external IP using ipify."""
+    if not requests:
+        logger.warning("requests module not available for WAN IP detection")
+        return ""
     try:
         resp = requests.get("https://api64.ipify.org", timeout=5)
         return resp.text.strip()
@@ -46,7 +62,16 @@ def get_dns_servers() -> list:
 def get_subnet_mask() -> str:
     out = _run_cmd("ifconfig 2>/dev/null | grep -w 'netmask' | head -n 1")
     m = re.search(r'netmask (\S+)', out)
-    return m.group(1) if m else ""
+    if not m:
+        return ""
+    mask = m.group(1)
+    if mask.startswith('0x'):
+        try:
+            mi = int(mask, 16)
+            return socket.inet_ntoa(struct.pack('>I', mi))
+        except Exception:
+            return mask
+    return mask
 
 
 def get_router_mac() -> str:
@@ -104,6 +129,9 @@ def get_router_make_model() -> str:
     router = get_router_ip()
     if not router:
         return ""
+    if not requests:
+        logger.debug("requests module not available for router make/model detection")
+        return ""
     try:
         resp = requests.get(f"http://{router}", timeout=3)
         text = resp.text.lower()
@@ -124,13 +152,14 @@ def get_router_firmware() -> str:
     m = re.search(r'\s([\w\-.]+)$', out)
     if m:
         return m.group(1)
-    try:
-        resp = requests.get(f"http://{router}", timeout=3)
-        m = re.search(r'Firmware Version[: ]*([0-9A-Za-z.\-]+)', resp.text)
-        if m:
-            return m.group(1)
-    except Exception:
-        pass
+    if requests:
+        try:
+            resp = requests.get(f"http://{router}", timeout=3)
+            m = re.search(r'Firmware Version[: ]*([0-9A-Za-z.\-]+)', resp.text)
+            if m:
+                return m.group(1)
+        except Exception:
+            pass
     upnp = _run_cmd("upnpc -l 2>/dev/null | grep -i firmware")
     m = re.search(r'Firmware[\w ]*:\s*([0-9A-Za-z.\-]+)', upnp)
     return m.group(1) if m else ""

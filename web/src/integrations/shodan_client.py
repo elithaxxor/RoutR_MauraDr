@@ -3,7 +3,10 @@
 import logging
 from typing import List, Optional
 
-import requests
+try:
+    import requests
+except ImportError:
+    requests = None
 
 logger = logging.getLogger(__name__)
 SHODAN_URL = "https://api.shodan.io"

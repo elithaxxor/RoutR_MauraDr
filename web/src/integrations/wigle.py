@@ -1,7 +1,10 @@
 import base64
 import logging
 from typing import Optional
-import requests
+try:
+    import requests
+except ImportError:
+    requests = None
 from ..config import config
 
 WIGLE_BASE_URL = "https://api.wigle.net/api/v2"
@@ -15,14 +18,21 @@ class WigleClient:
         creds = config.get("wigle", {})
         self.username = username or creds.get("username")
         self.password = password or creds.get("password")
-        self.session = requests.Session()
-        if self.username and self.password:
-            token = base64.b64encode(f"{self.username}:{self.password}".encode()).decode()
-            self.session.headers.update({"Authorization": f"Basic {token}"})
+        if requests:
+            self.session = requests.Session()
+            if self.username and self.password:
+                token = base64.b64encode(f"{self.username}:{self.password}".encode()).decode()
+                self.session.headers.update({"Authorization": f"Basic {token}"})
+            else:
+                logger.warning("Wigle credentials not configured")
         else:
-            logger.warning("Wigle credentials not configured")
+            self.session = None
+            logger.warning("requests module not available, WigleClient disabled")
 
     def _request(self, endpoint: str, **params):
+        if not requests or not self.session:
+            logger.warning("requests module not available for WigleClient requests")
+            return None
         try:
             resp = self.session.get(f"{WIGLE_BASE_URL}{endpoint}", params=params, timeout=10)
             resp.raise_for_status()

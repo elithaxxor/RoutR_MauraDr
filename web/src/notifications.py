@@ -1,6 +1,9 @@
 """Mobile notification helpers."""
 import logging
-import requests
+try:
+    import requests
+except ImportError:
+    requests = None
 
 logger = logging.getLogger(__name__)
 
@@ -10,6 +13,9 @@ PUSHBULLET_TOKEN = None
 def send_pushbullet(title: str, body: str) -> bool:
     if not PUSHBULLET_TOKEN:
         logger.warning("Pushbullet token not configured")
+        return False
+    if not requests:
+        logger.warning("requests module not available for Pushbullet notifications")
         return False
     try:
         resp = requests.post(
