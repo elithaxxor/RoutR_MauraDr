@@ -1,4 +1,5 @@
 """Simple Shodan API client used for importing scan results."""
+
 import logging
 from typing import List, Optional
 

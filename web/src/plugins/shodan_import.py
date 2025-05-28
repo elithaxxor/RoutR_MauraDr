@@ -1,13 +1,4 @@
-"""Plugin to import results from Shodan."""
-from ..integrations.shodan import ShodanClient
-
-NAME = "ShodanImport"
-
-client = ShodanClient()
-
-def register():
-    return {"message": "Shodan plugin loaded", "api_key_set": bool(client.api_key)}
-  """Plugin to import scan results from Shodan."""
+"""Plugin to import scan results from Shodan."""
 
 from ..integrations import shodan_client
 from ..config import config
@@ -16,6 +7,7 @@ NAME = "ShodanImport"
 
 
 def register():
+    """Return sample results from Shodan using configured API key."""
     api_key = config.get("shodan_api_key")
     if not api_key:
         return {"error": "Shodan API key not configured"}
