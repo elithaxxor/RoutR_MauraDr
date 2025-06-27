@@ -1,10 +1,12 @@
 import json
 from typing import List, Optional
+from pathlib import Path
 import tkinter as tk
 from tkinter import messagebox
 
 try:
     import networkx as nx
+    from networkx.readwrite import json_graph
 except ImportError:  # pragma: no cover - library may be missing in tests
     class _SimpleGraph:
         def __init__(self):
@@ -19,6 +21,9 @@ except ImportError:  # pragma: no cover - library may be missing in tests
 
         def nodes(self):  # mimic networkx API partially
             return self._nodes
+
+        def edges(self):
+            return list(self._edges)
 
         def has_edge(self, a, b):
             return (a, b) in self._edges or (b, a) in self._edges
@@ -36,6 +41,25 @@ except ImportError:  # pragma: no cover - library may be missing in tests
         @staticmethod
         def draw_networkx(*args, **kwargs):
             pass
+
+    def _node_link_data(g: _SimpleGraph):
+        return {
+            'nodes': [{'id': n, **attrs} for n, attrs in g.nodes().items()],
+            'links': [{'source': a, 'target': b} for a, b in g.edges()]}
+
+    def _node_link_graph(data):
+        g = _SimpleGraph()
+        for node in data.get('nodes', []):
+            nid = node.pop('id')
+            g.add_node(nid, **node)
+        for link in data.get('links', []):
+            g.add_edge(link['source'], link['target'])
+        return g
+
+    json_graph = type('json_graph', (), {
+        'node_link_data': staticmethod(_node_link_data),
+        'node_link_graph': staticmethod(_node_link_graph),
+    })
 
 try:
     from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -104,4 +128,54 @@ def show_topology(hosts: List[str], parent: tk.Toplevel, router_ip: Optional[str
         messagebox.showinfo("Host Info", summary)
 
     fig.canvas.mpl_connect("button_press_event", on_click)
+
+
+def save_topology(graph: nx.Graph, path: str) -> None:
+    """Save a graph to a JSON file for historical view mode."""
+    data = json_graph.node_link_data(graph)
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2)
+
+
+def load_topology(path: str) -> nx.Graph:
+    """Load a graph from a JSON file."""
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return json_graph.node_link_graph(data)
+
+
+def load_history(directory: str) -> List[nx.Graph]:
+    """Load all topology JSON files from a directory."""
+    graphs = []
+    for p in sorted(Path(directory).glob('topology_*.json')):
+        try:
+            graphs.append(load_topology(str(p)))
+        except Exception:
+            continue
+    return graphs
+
+
+def export_png(graph: nx.Graph, path: str) -> None:
+    """Export a topology graph as PNG."""
+    if not plt:
+        raise RuntimeError('matplotlib not available')
+    pos = nx.spring_layout(graph)
+    nx.draw_networkx(graph, pos)
+    plt.savefig(path)
+    plt.close()
+
+
+def export_html(graph: nx.Graph, path: str) -> None:
+    """Export topology as a minimal interactive HTML."""
+    data = json.dumps(json_graph.node_link_data(graph))
+    html = (
+        "<html><body><div id='graph'></div>"
+        "<script src='https://cdn.jsdelivr.net/npm/vis-network/standalone/umd/vis-network.min.js'></script>"
+        "<script>var data = new vis.DataSet(JSON.parse('" + data.replace("'", "\'") + "').nodes);"
+        "var edges = new vis.DataSet(JSON.parse('" + data.replace("'", "\'") + "').links);"
+        "var container=document.getElementById('graph');"
+        "new vis.Network(container,{nodes:data,edges:edges},{})</script></body></html>"
+    )
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(html)
 
