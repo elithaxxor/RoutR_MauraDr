@@ -165,6 +165,16 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 
 - **Third-Party Scan Import**
   - Import results from Shodan or Censys to correlate with local findings.
+- **Role-Based API Tokens**
+  - Provide fine-grained permissions for automation scripts.
+- **Centralized Result Dashboard**
+  - Aggregate scans from multiple installations into a single view.
+- **IPv6 Support**
+  - Extend discovery and enumeration to cover IPv6 networks.
+- **Plugin Marketplace**
+  - Allow users to share and install community plugins securely.
+- **Mobile App Companion**
+  - Deliver alerts and summaries directly to Android/iOS devices.
 
 ### Recent Feature Additions
 - **Automated Dependency Updates**
