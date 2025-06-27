@@ -23,6 +23,12 @@ MODULES = [
     'web.src.wireless_scanner',
     'web.src.container_audit',
     'web.src.inventory_import',
+# Additional feature modules
+    'web.src.role_tokens',
+    'web.src.result_dashboard',
+    'web.src.ipv6_support',
+    'web.src.plugin_marketplace',
+    'web.src.mobile_companion',
 
 ]
 
