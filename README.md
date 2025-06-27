@@ -332,6 +332,13 @@ pip install -r requirements.txt
    - Runs a **quick stealth port scan** on the router (top 10 ports), trying to detect the OS.  
    - **Starts** netcat on **port 6666** and spawns **ngrok** tunnels (TCP on 6667, HTTP on 80).  
 
+### Command Line Interface
+Run individual scans or external API queries:
+```bash
+python3 -m web.src.cli scan 192.168.1.0/24 --intensity medium
+python3 -m web.src.cli shodan-search "apache"
+```
+
 ---
 
 ## **How It Works (Detailed)** <a id="how-it-works-detailed"></a>
