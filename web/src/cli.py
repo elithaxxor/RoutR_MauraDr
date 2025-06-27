@@ -15,6 +15,14 @@ from .result_dashboard import ResultDashboard
 from .mobile_companion import send_summary as send_mobile_summary
 from .correlation import correlate_hosts
 from .export_scheduler import ExportScheduler
+from .update_db import update_database
+from .plugin_harness import run_tests as run_plugin_tests
+from .scan_profiles import (
+    add_profile,
+    remove_profile,
+    list_profiles,
+    run_scheduled,
+)
 
 
 def cmd_scan(args):
@@ -163,6 +171,41 @@ def cmd_export_schedule(args):
         pass
 
 
+def cmd_update_db(args):
+    if update_database(args.url):
+        print("Database updated")
+    else:
+        print("Update failed")
+
+
+def cmd_plugin_test(args):
+    results = run_plugin_tests([Path(p) for p in args.paths])
+    for path, ok in results.items():
+        print(f"{path}: {'ok' if ok else 'fail'}")
+
+
+def cmd_schedule_list(args):
+    for prof in list_profiles():
+        print(f"{prof['name']} {prof['cidr']} {prof.get('intensity','low')} {prof.get('interval',3600)}")
+
+
+def cmd_schedule_add(args):
+    add_profile(args.name, args.cidr, args.intensity, args.interval)
+    print("Profile saved")
+
+
+def cmd_schedule_remove(args):
+    remove_profile(args.name)
+    print("Profile removed")
+
+
+def cmd_schedule_run(args):
+    def run_scan(cidr, intensity):
+        print(f"Would scan {cidr} ({intensity})")
+
+    run_scheduled(run_scan)
+
+
 def main():
     parser = argparse.ArgumentParser(description="SMB-Scor3 Command Line")
     sub = parser.add_subparsers(dest="cmd")
@@ -249,6 +292,30 @@ def main():
     batch.add_argument("file", help="File with IPs or queries")
     batch.add_argument("--output", help="Write results to file")
     batch.set_defaults(func=cmd_batch)
+
+    upd = sub.add_parser("update-db", help="Update vulnerability database")
+    upd.add_argument("--url", default=None, help="Source URL")
+    upd.set_defaults(func=cmd_update_db)
+
+    ptest = psub.add_parser("test", help="Validate plugin files")
+    ptest.add_argument("paths", nargs="+", help="Plugin paths")
+    ptest.set_defaults(func=cmd_plugin_test)
+
+    sched = sub.add_parser("schedule", help="Manage scan profiles")
+    ssub = sched.add_subparsers(dest="s_cmd")
+    s_list = ssub.add_parser("list", help="List profiles")
+    s_list.set_defaults(func=cmd_schedule_list)
+    s_add = ssub.add_parser("add", help="Add profile")
+    s_add.add_argument("name")
+    s_add.add_argument("cidr")
+    s_add.add_argument("--intensity", default="low")
+    s_add.add_argument("--interval", type=int, default=3600)
+    s_add.set_defaults(func=cmd_schedule_add)
+    s_del = ssub.add_parser("remove", help="Remove profile")
+    s_del.add_argument("name")
+    s_del.set_defaults(func=cmd_schedule_remove)
+    s_run = ssub.add_parser("run", help="Run scheduled scans")
+    s_run.set_defaults(func=cmd_schedule_run)
 
     args = parser.parse_args()
     if not args.cmd:
