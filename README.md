@@ -5,6 +5,95 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 
 ---
 
+
+🚀 Features
+
+🔍 Network Discovery
+	•	Detects Local IP, Router IP, WAN IP, Subnet, MAC, DNS servers
+	•	ARP Table scan with device hostname, MAC, and IP
+	•	DNS Table extraction via SNMP, UPnP, brute-force
+
+🔓 Router Analysis
+	•	Detects router make/model via login page scraping
+	•	Extracts router firmware via SNMP/UPnP/HTTP
+	•	Auto-SSH login attempts with default credentials
+
+🛡 Security Assessment
+	•	CVE database lookup for known firmware vulnerabilities (offline)
+	•	Stealthy port scan & OS detection via nmap
+	•	Integrates with OpenVAS/Nessus for deeper scans
+	•	Firmware update checker using cached vendor data
+
+🌐 Remote Tunneling
+	•	Starts netcat listener on port 6666
+	•	Launches ngrok tunnels (TCP 6667, HTTP 80)
+
+🧩 Extensible & Automated
+	•	Plugin-based scanning (drop files in plugins/)
+	•	JSON/TXT result exports for offline review
+	•	Simple GUI with Tkinter (web/src/gui.py)
+	•	Scan scheduling based on past results
+	•	Pushbullet alerts for critical events
+
+🗂 Output Files
+	•	open_ports.json, quick_scan.txt, discovered_ips.json, etc.
+
+⸻
+
+🔁 Feature Flowchart
+```
+flowchart TD
+    Start([Start NetVision])
+    Config[Load config.yaml & config.ini]
+    NetInfo[Collect local network info]
+    ARPScan[Scan ARP table for LAN devices]
+    DNSDiscover[Discover DNS entries via SNMP/UPnP]
+    RouterID[Detect router make/model]
+    FirmwareDetect[Extract firmware version]
+    CVELookup[Match firmware to local CVE DB]
+    SSHBrute[Try default router SSH credentials]
+    NmapScan[Run Nmap SYN scan + OS detect]
+    NetcatStart[Start Netcat (port 6666)]
+    NgrokStart[Start Ngrok (TCP 6667, HTTP 80)]
+    Export[Export results (JSON, TXT)]
+    Notify[Push alerts if issues]
+    GUI[Optional: Launch Tkinter GUI]
+
+    Start --> Config --> NetInfo
+    NetInfo --> ARPScan --> DNSDiscover --> RouterID --> FirmwareDetect
+    FirmwareDetect --> CVELookup --> SSHBrute
+    CVELookup --> NmapScan --> NetcatStart --> NgrokStart
+    NgrokStart --> Export --> Notify --> GUI
+```
+
+⸻
+
+
+
+
+```classDiagram
+    class ScanGUI {
+        <<Tkinter GUI>>
+        -cidr_entry: tk.Entry
+        -log_box: scrolledtext.ScrolledText
+        +__init__()
+        +create_widgets()
+        +start_scan()
+        +run_scan(cidr: string)
+        +append_log(text: string)
+    }
+    note for ScanGUI "Inherits from tk.Tk"
+
+```
+
+
+
+
+
+
+
+
+
 ## TODO: 
 ```
 **Add auto-search** for firmware bugs and auto ssh with firmware default passwords
@@ -31,8 +120,8 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 ---
 
 ## **Features** <a id="features"></a>  
-- **Local Network Data**  
-  - Local IP, Router IP, WAN IP, DNS servers, Subnet mask, Router MAC, etc.  
+- **Local Network Data**
+  - Local IP, Router IP, WAN IP, DNS servers, Subnet mask, Router MAC, etc. (implemented in `web/src/network_info.py`)
 - **ARP Table Scan**  
   - Resolves device IPs, MAC addresses, and hostnames on the local LAN.  
 - **Router DNS Table**  
@@ -44,19 +133,41 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 - **Optional Firmware CVE Lookup**
   - Uses an offline CVE database to search for vulnerabilities in detected firmware.
 - **Default Credential SSH Attempts**
-  - Tries common username/password pairs when enabled to identify weak router security.
+  - Tries common username/password pairs when enabled to identify weak router security (see `web/src/router_ssh.py`).
 - **Stealthy Quick Port Scan**
-  - Uses **nmap** for a SYN scan on **top 10 ports**, plus **OS detection** (requires `sudo`).  
-  - Saves open ports to both `.txt` and `.json` for easy review.  
+  - Uses **nmap** for a SYN scan on **top 10 ports**, plus **OS detection** (requires `sudo`).
+  - Saves open ports to both `.txt` and `.json` for easy review via `web/src/quick_scan.py`.
 - **Netcat Listener**
-  - Listens on **port 6666**.
+  - Listens on **port 6666** (handled by `web/src/net_services.py`).
 - **Ngrok Tunnels**
   - **TCP** tunnel for port **6667**
-  - **HTTP** tunnel for port **80**
+  - **HTTP** tunnel for port **80** (spawned via `web/src/net_services.py`)
 - **Plugin System**
   - Drop new scanning modules into `plugins/` and they load automatically.
 - **Offline Results Export**
   - Save scan data to a JSON file for later review.
+- **Desktop GUI**
+  - Launch `web/src/gui.py` for a basic Tkinter interface to run scans and view logs.
+- **External Scanner Integration**
+  - Optional hooks for OpenVAS and Nessus to perform deeper vulnerability analysis.
+- **Firmware Update Checks**
+  - Compare detected router firmware with cached vendor data and alert when updates exist.
+- **Adaptive Scan Scheduling**
+  - Schedule recurring scans that adjust frequency based on previous scores.
+- **Mobile Notifications**
+  - Push critical alerts via Pushbullet when configured.
+
+- **Shodan Integration**
+  - Import scan data from the Shodan API when a key is provided.
+- **Wigle Wi-Fi Lookup**
+  - Query Wigle's API to correlate router MAC addresses with nearby wireless networks.
+
+
+- **Third-Party Scan Import**
+  - Import results from Shodan or Censys to correlate with local findings.
+
+
+
 
 ---
 
@@ -83,12 +194,12 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 
 ## **Configuration Setup** <a id="configuration-setup"></a>
 
-Before running the program, ensure that you have set up the necessary configuration files. The application requires two configuration files: `config.ini` and `config.yaml`.
+Before running the program, ensure that you have set up the necessary configuration files. The application uses `config.ini`, `config.yaml`, and `config.json`.
 
 ### **Steps to Configure**
 
 1. **Locate the Config Files**:
-   - Both `config.ini` and `config.yaml` are located in the `web` directory.
+   - `config.ini`, `config.yaml`, and `config.json` are all located in the `web` directory.
 
 2. **Edit the Config Files**:
    - Open the files in a text editor of your choice and update the following variables:
@@ -105,6 +216,14 @@ Before running the program, ensure that you have set up the necessary configurat
      secret_key: "your-secret-key"  # Replace 'your-secret-key' with a strong, secure key
    ```
 
+   **In `config.json`**:
+   ```json
+   {
+       "shodan_api_key": "your-shodan-key",
+       "wigle": {"username": "user", "password": "pass"}
+   }
+   ```
+
 3. **Variables to Adjust**:
 4. 
    - **JWT Secret Key**:
@@ -114,6 +233,14 @@ Before running the program, ensure that you have set up the necessary configurat
      - In `config.ini`, ensure the `path` under `[database]` points to the correct database file (default: `smb_enum.db`).
    - **Network CIDR**:
      - In `config.yaml`, update the `default_cidr` under `network` if your network's IP range differs from the default (`192.168.1.0/24`).
+   - **Shodan API Key**:
+
+     - In `config.json`, set `shodan_api_key` if you want to import results from Shodan.
+   - **Wigle Credentials**:
+     - In `config.json`, provide your Wigle `username` and `password` under the `wigle` section.
+
+     - In `config.json`, set `shodan_api_key` to your personal API token to enable third-party scan imports.
+
 
 5. **Save Changes**:
 6. 

@@ -11,6 +11,8 @@ from .scanning import discover_smb_hosts, run_nmap_scan
 from .enumeration import enumerate_lan_hosts
 from .scoring import calculate_vulnerability_score, generate_remediation
 from .plugin_loader import load_plugins
+from .network_info import get_router_ip
+from .config_backup import backup_config, verify_config
 import os
 import sys
 
@@ -21,6 +23,8 @@ def display_help():
     print("""
 === SMB-Scor3 Help ===
 1) Discover and enumerate SMB hosts: Scan a network for SMB services and assess vulnerabilities.
+3) Backup router configuration via SSH and SCP.
+4) Verify configuration against a baseline file.
 0) Exit: Quit the tool.
 
 Tips:
@@ -48,6 +52,8 @@ def main():
         print("\n=== SMB-Scor3 MAIN MENU ===")
         print("1) Discover and enumerate SMB hosts")
         print("2) Help")
+        print("3) Backup router configuration")
+        print("4) Verify configuration against baseline")
         print("0) Exit")
         choice = input("Select an option: ").strip()
 
@@ -93,6 +99,27 @@ def main():
                 logger.info("Operation cancelled by user.")
             except Exception as e:
                 logger.error(f"An error occurred: {e}")
+        elif choice == '3':
+            ip = input("Router IP [auto-detect]: ").strip() or get_router_ip()
+            if not ip:
+                print("Router IP not found.")
+                continue
+            user = input("SSH username [admin]: ").strip() or 'admin'
+            password = input("SSH password: ").strip()
+            remote = input("Remote config path [/etc/config.cfg]: ").strip() or '/etc/config.cfg'
+            dest = input("Destination directory [backups]: ").strip() or 'backups'
+            backup_config(ip, user, password, remote, dest)
+        elif choice == '4':
+            baseline = input("Baseline config file: ").strip()
+            current = input("Config file to verify: ").strip()
+            try:
+                diff = verify_config(baseline, current)
+                if not diff:
+                    print("Configuration matches baseline.")
+                else:
+                    print('\n'.join(diff))
+            except Exception as e:
+                logger.error(f"Verification failed: {e}")
         else:
             print("Invalid option. Please try again.")
 
