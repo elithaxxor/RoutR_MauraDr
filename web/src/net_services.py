@@ -40,3 +40,18 @@ def start_ngrok_http(port: int = 80) -> Optional[subprocess.Popen]:
     except Exception as exc:
         logger.error("Failed to start ngrok http: %s", exc)
         return None
+
+
+def stop_process(proc: Optional[subprocess.Popen]) -> None:
+    """Terminate a running subprocess."""
+    if proc and proc.poll() is None:
+        proc.terminate()
+        try:
+            proc.wait(timeout=5)
+        except Exception:
+            proc.kill()
+
+
+def is_running(proc: Optional[subprocess.Popen]) -> bool:
+    """Return True if the process is still running."""
+    return bool(proc and proc.poll() is None)

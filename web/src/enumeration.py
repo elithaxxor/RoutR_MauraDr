@@ -2,6 +2,7 @@ from .utils import validate_ip
 from .logging import setup_logger
 from .config import config
 from .scanning import run_nmap_scan
+from .correlation import correlate_hosts
 import subprocess
 
 logger = setup_logger(config['database'])
@@ -59,4 +60,6 @@ def enumerate_lan_hosts(hosts, intensity="low"):
         except Exception as e:
             logger.error(f"Unexpected error during enumeration of {ip}: {e}")
 
+    # Cross-reference with external data sources
+    host_data = correlate_hosts(host_data)
     return host_data

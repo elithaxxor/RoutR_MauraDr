@@ -12,3 +12,9 @@ The following suggestions could further enhance the RoutR_MauraDr toolkit.
   - Allow users to share and install community plugins securely.
 - **Mobile App Companion**
   - Deliver alerts and summaries directly to Android/iOS devices.
+- **Automated Shodan & Censys Correlation**
+  - Cross-reference local scan results with external search engines.
+- **Live Tunnel Management**
+  - Start/stop netcat and ngrok tunnels from the GUI.
+- **Export Scheduler**
+  - Schedule automatic exports of scan summaries to JSON or CSV.

@@ -1,7 +1,8 @@
 """Import network inventory data to enrich scan results."""
 import json
 import logging
-from typing import Dict, List
+from typing import Dict, List, Tuple
+from .scoring import calculate_vulnerability_score
 
 logger = logging.getLogger(__name__)
 
@@ -24,3 +25,14 @@ def enrich_results(results: Dict[str, Dict], inventory: List[Dict[str, str]]) ->
         if host in inv_map:
             info.update({"device_name": inv_map[host].get("name")})
     return results
+
+
+def prioritize_hosts(results: Dict[str, Dict]) -> List[Tuple[str, int]]:
+    """Return hosts sorted by priority based on vulnerability score."""
+    scored: List[Tuple[str, int]] = []
+    for host, info in results.items():
+        score, _ = calculate_vulnerability_score(info)
+        priority = 100 - score
+        scored.append((host, priority))
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return scored
