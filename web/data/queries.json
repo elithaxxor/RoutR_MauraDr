@@ -1,0 +1,7 @@
+{
+  "shodan": {
+    "unittest": "testquery"
+  },
+  "censys": {},
+  "wigle": {}
+}
