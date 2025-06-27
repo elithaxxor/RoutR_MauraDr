@@ -187,6 +187,14 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
   - Scan container images for vulnerabilities and risky configurations.
 - **Network Inventory Integration**
   - Import external device data to enrich scan results.
+- **Real-Time Market Data Streaming**
+  - Display exchange data live via WebSockets on the dashboard.
+- **Historical Backtesting Engine**
+  - Replay saved data sets to evaluate scanning or trading strategies.
+- **Portfolio Tracking**
+  - Monitor holdings and profit/loss alongside scan insights.
+- **iCloud Sync & Auto Update**
+  - Sync preferences across macOS devices and notify on new releases.
 
 
 
