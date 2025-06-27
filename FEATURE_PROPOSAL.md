@@ -103,3 +103,16 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 - Expand the web interface to support multiple authenticated users.
 - Include role-based permissions for viewing scans, running tasks, and editing configuration.
 
+
+## 25. Automated Dependency Updates
+- Schedule checks for outdated Python packages and plugins.
+- Provide CLI and API commands to review and apply updates.
+
+## 26. Enhanced Report Generation
+- Export scan summaries in HTML and PDF formats with charts.
+- Allow scheduled emailing of generated reports.
+
+## 27. 802.11 Wireless Scanning
+- Map nearby Wi-Fi networks and gather basic security metrics.
+- Optionally capture handshakes for further analysis.
+
