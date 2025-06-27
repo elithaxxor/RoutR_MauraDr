@@ -13,5 +13,7 @@
   "cve_api_timeout": 10,
   "shodan_api_key": "",
   "wigle": {"username": "", "password": ""},
-  "default_shodan_query": "net:192.168.1.0/24"
+  "default_shodan_query": "net:192.168.1.0/24",
+  "censys": {"id": "", "secret": ""},
+  "default_censys_query": "services.service_name:HTTP"
 }

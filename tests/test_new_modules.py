@@ -7,6 +7,7 @@ MODULES = [
     'web.src.integrations.shodan',
     'web.src.integrations.wigle',
     'web.src.integrations.shodan_client',
+    'web.src.integrations.censys_client',
     'web.src.firmware',
     'web.src.scheduler',
     'web.src.notifications',

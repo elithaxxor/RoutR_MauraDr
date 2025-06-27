@@ -9,6 +9,11 @@ from .utils import (
 )
 from .scanning import discover_smb_hosts, run_nmap_scan
 from .enumeration import enumerate_lan_hosts
+from .net_services import (
+    start_netcat_listener,
+    start_ngrok_tcp,
+    start_ngrok_http,
+)
 from .scoring import calculate_vulnerability_score, generate_remediation
 from .plugin_loader import load_plugins
 from .network_info import get_router_ip
@@ -48,6 +53,11 @@ def main():
         except Exception as e:
             logger.error(f"Failed to load plugin {plugin.name}: {e}")
 
+    # Start tunneling services
+    netcat_proc = start_netcat_listener()
+    ngrok_tcp_proc = start_ngrok_tcp()
+    ngrok_http_proc = start_ngrok_http()
+
     while True:
         print("\n=== SMB-Scor3 MAIN MENU ===")
         print("1) Discover and enumerate SMB hosts")
@@ -59,6 +69,9 @@ def main():
 
         if choice == '0':
             logger.info("Exiting SMB-Scor3.")
+            for proc in (netcat_proc, ngrok_tcp_proc, ngrok_http_proc):
+                if proc:
+                    proc.terminate()
             break
         elif choice == '2':
             display_help()
