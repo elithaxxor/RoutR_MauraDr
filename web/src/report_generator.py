@@ -2,7 +2,21 @@
 import json
 import logging
 from typing import Dict
-from jinja2 import Template
+try:
+    from jinja2 import Template
+except Exception:  # pragma: no cover - jinja2 may be absent in tests
+    class Template:  # type: ignore
+        """Fallback Template if jinja2 is unavailable."""
+
+        def __init__(self, text: str) -> None:
+            self.text = text
+
+        def render(self, **kwargs: Dict[str, str]) -> str:
+            rendered = self.text
+            for key, value in kwargs.items():
+                rendered = rendered.replace(f"{{{{ {key} }}}}", str(value))
+                rendered = rendered.replace(f"{{{{{key}}}}}", str(value))
+            return rendered
 
 try:
     import pdfkit
