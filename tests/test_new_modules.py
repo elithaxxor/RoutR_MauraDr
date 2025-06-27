@@ -32,6 +32,15 @@ MODULES = [
     'web.src.ipv6_support',
     'web.src.plugin_marketplace',
     'web.src.mobile_companion',
+    # Modules added for financial tooling and management
+    'web.src.market_ws',
+    'web.src.backtesting',
+    'web.src.portfolio',
+    'web.src.icloud_sync',
+    'web.src.auto_update',
+    'web.src.data_retention',
+    'web.src.virtualization',
+    'web.src.browser_quick_scan',
 
 ]
 

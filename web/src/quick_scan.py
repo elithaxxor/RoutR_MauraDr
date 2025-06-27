@@ -28,3 +28,12 @@ def quick_scan(target: str, out_prefix: str = "quick_scan") -> Path:
     except Exception as exc:
         logger.error("Quick scan failed: %s", exc)
         return js
+
+
+def quick_port_scan(target: str) -> dict:
+    """Convenience wrapper returning open ports as a dict."""
+    json_path = quick_scan(target)
+    try:
+        return json.loads(json_path.read_text())
+    except Exception:
+        return {"target": target, "open_ports": []}

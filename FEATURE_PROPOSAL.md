@@ -136,3 +136,30 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 ## 33. Export Scheduler
 - Allow users to schedule automatic exports of scan summaries to JSON or CSV.
 - Useful for offline review or archiving results.
+
+## 34. Machine Learning Anomaly Detection
+- Apply ML techniques to identify unusual network behavior over time.
+
+## 35. Multi-Exchange Market Data Streaming
+- Integrate real-time WebSocket feeds from cryptocurrency exchanges.
+
+## 36. Historical Backtesting Engine
+- Simulate detection or trading strategies against archived data sets.
+
+## 37. Portfolio Tracking Dashboard
+- Track asset holdings and PnL alongside vulnerability metrics.
+
+## 38. iCloud Configuration Sync
+- Synchronize user preferences across macOS devices via iCloud.
+
+## 39. Auto Update Notifier
+- Check for new releases of the companion tools and prompt users to update.
+
+## 40. Virtualization Guest Enumeration
+- Query common hypervisors to include virtual machines in scan scopes.
+
+## 41. Data Retention Policies
+- Provide configurable pruning of old scan artifacts.
+
+## 42. Browser Quick Scan Extension
+- Launch quick scans directly from a browser toolbar button.
