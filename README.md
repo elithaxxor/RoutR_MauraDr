@@ -166,6 +166,18 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 - **Third-Party Scan Import**
   - Import results from Shodan or Censys to correlate with local findings.
 
+### Recent Feature Additions
+- **Automated Dependency Updates**
+  - Check for outdated Python packages and plugins via CLI or API.
+- **Enhanced Report Generation**
+  - Export scan summaries to HTML and PDF and schedule email delivery.
+- **802.11 Wireless Scanning**
+  - Map nearby Wi-Fi networks and optionally capture handshakes.
+- **Container Security Auditing**
+  - Scan container images for vulnerabilities and risky configurations.
+- **Network Inventory Integration**
+  - Import external device data to enrich scan results.
+
 
 
 

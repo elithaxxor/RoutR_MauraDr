@@ -17,3 +17,4 @@ venv/
 .env
 # Database files generated during tests
 smb_enum.db
+data/nvd/
