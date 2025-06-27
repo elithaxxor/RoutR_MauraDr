@@ -96,3 +96,10 @@ async def run_pgrok(port: int) -> Dict[str, Any]:
     if not is_available("pgrok"):
         return {"error": "pgrok missing"}
     return await _run_tool(["pgrok", "http", str(port)])
+
+
+async def run_hcxdumptool(interface: str, output: str) -> Dict[str, Any]:
+    """Capture wireless traffic using hcxdumptool."""
+    if not is_available("hcxdumptool"):
+        return {"error": "hcxdumptool missing"}
+    return await _run_tool(["hcxdumptool", "-i", interface, "-o", output, "--enable_status=1"])

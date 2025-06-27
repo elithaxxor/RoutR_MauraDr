@@ -54,6 +54,7 @@ class Health(Resource):
             "nikto",
             "sqlmap",
             "pgrok",
+            "hcxdumptool",
         ]
         status = {t: wrappers.is_available(t) for t in tools}
         return {"ready": True, "tools": status}, 200

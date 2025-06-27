@@ -186,6 +186,8 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
   - Export scan summaries to HTML and PDF and schedule email delivery.
 - **802.11 Wireless Scanning**
   - Map nearby Wi-Fi networks and optionally capture handshakes.
+- **PMKID Capture via hcxdumptool**
+  - Collect WPA hashes for offline cracking.
 - **Container Security Auditing**
   - Scan container images for vulnerabilities and risky configurations.
 - **Network Inventory Integration**
