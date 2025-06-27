@@ -21,10 +21,10 @@ fi
 echo "Installing common shell dependencies (edit as needed)..."
 if command -v brew >/dev/null 2>&1; then
     brew update
-    brew install nmap curl
+    brew install nmap curl masscan arp-scan hydra gvm miniupnpc nikto sqlmap pgrok
 elif command -v apt-get >/dev/null 2>&1; then
     sudo apt-get update
-    sudo apt-get install -y nmap curl
+    sudo apt-get install -y nmap curl masscan arp-scan hydra gvm-cli miniupnpc nikto sqlmap
 elif command -v yum >/dev/null 2>&1; then
     sudo yum install -y nmap curl
 else
