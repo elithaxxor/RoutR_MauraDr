@@ -17,6 +17,7 @@ from .correlation import correlate_hosts
 from .export_scheduler import ExportScheduler
 from .update_db import update_database
 from .plugin_harness import run_tests as run_plugin_tests
+from .internet_health import monitor as monitor_health
 from .scan_profiles import (
     add_profile,
     remove_profile,
@@ -171,6 +172,10 @@ def cmd_export_schedule(args):
         pass
 
 
+def cmd_monitor(args):
+    monitor_health(args.router_ip, args.interval, args.threshold)
+
+
 def cmd_update_db(args):
     if update_database(args.url):
         print("Database updated")
@@ -296,6 +301,12 @@ def main():
     upd = sub.add_parser("update-db", help="Update vulnerability database")
     upd.add_argument("--url", default=None, help="Source URL")
     upd.set_defaults(func=cmd_update_db)
+
+    mon = sub.add_parser("health-monitor", help="Monitor internet connectivity")
+    mon.add_argument("--router-ip", default=None, help="Router IP")
+    mon.add_argument("--interval", type=int, default=60)
+    mon.add_argument("--threshold", type=int, default=3)
+    mon.set_defaults(func=cmd_monitor)
 
     ptest = psub.add_parser("test", help="Validate plugin files")
     ptest.add_argument("paths", nargs="+", help="Plugin paths")
