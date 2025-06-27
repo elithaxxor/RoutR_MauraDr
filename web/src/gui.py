@@ -20,6 +20,7 @@ class ScanGUI(tk.Tk):
         self.nc_proc = None
         self.ngrok_tcp_proc = None
         self.ngrok_http_proc = None
+        self.last_hosts = []
         self.create_widgets()
 
     def create_widgets(self):
@@ -32,6 +33,8 @@ class ScanGUI(tk.Tk):
         self.cidr_entry.insert(0, "192.168.1.0/24")
 
         tk.Button(frame, text="Start Scan", command=self.start_scan).grid(row=0, column=2, padx=5)
+        self.map_btn = tk.Button(frame, text="Show Map", command=self.show_map, state=tk.DISABLED)
+        self.map_btn.grid(row=0, column=3, padx=5)
 
         self.netcat_btn = tk.Button(frame, text="Start Netcat", command=self.toggle_netcat)
         self.netcat_btn.grid(row=1, column=0, pady=5)
@@ -48,6 +51,7 @@ class ScanGUI(tk.Tk):
     def run_scan(self, cidr):
         self.append_log(f"Scanning {cidr}...\n")
         hosts = discover_smb_hosts(cidr)
+        self.last_hosts = hosts
         host_data = enumerate_lan_hosts(hosts)
         for host, data in host_data.items():
             score, category = calculate_vulnerability_score(data)
@@ -57,6 +61,8 @@ class ScanGUI(tk.Tk):
                 for step in remediation:
                     self.append_log(f"  - {step}\n")
         self.append_log("Scan complete.\n")
+        if self.last_hosts:
+            self.map_btn.configure(state=tk.NORMAL)
 
     def append_log(self, text):
         self.log_box.configure(state="normal")
@@ -90,6 +96,15 @@ class ScanGUI(tk.Tk):
             if self.ngrok_tcp_proc or self.ngrok_http_proc:
                 self.ngrok_btn.configure(text="Stop Ngrok")
                 self.append_log("Ngrok tunnels started\n")
+
+    def show_map(self):
+        if not self.last_hosts:
+            messagebox.showinfo("Topology", "Run a scan first")
+            return
+        from . import network_map
+        win = tk.Toplevel(self)
+        win.title("Network Topology")
+        network_map.show_topology(self.last_hosts, win)
 
 
 def launch_gui():

@@ -4,6 +4,7 @@ flask-jwt-extended
 impacket
 pandas
 matplotlib
+networkx
 jinja2
 requests
 werkzeug
