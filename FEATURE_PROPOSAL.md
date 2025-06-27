@@ -91,28 +91,36 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 
 
 
-## 22. Machine Learning Threat Scoring
+## 23. Machine Learning Threat Scoring
 - Implement a lightweight anomaly detection engine that learns typical network behavior and highlights suspicious deviations.
 - Display threat scores in the web dashboard to prioritize investigations.
 
-## 23. Cloud Synchronization of Scan Results
+## 24. Cloud Synchronization of Scan Results
 - Provide optional integration with popular storage services (e.g., AWS S3) to back up scan history.
 - Allow teams to share findings across multiple instances of the tool.
 
-## 24. Multi-User Access Control
+## 25. Multi-User Access Control
 - Expand the web interface to support multiple authenticated users.
 - Include role-based permissions for viewing scans, running tasks, and editing configuration.
 
 
-## 25. Automated Dependency Updates
+## 26. Automated Dependency Updates
 - Schedule checks for outdated Python packages and plugins.
 - Provide CLI and API commands to review and apply updates.
 
-## 26. Enhanced Report Generation
+## 27. Enhanced Report Generation
 - Export scan summaries in HTML and PDF formats with charts.
 - Allow scheduled emailing of generated reports.
 
-## 27. 802.11 Wireless Scanning
+## 28. 802.11 Wireless Scanning
 - Map nearby Wi-Fi networks and gather basic security metrics.
 - Optionally capture handshakes for further analysis.
 
+
+## 29. Container Security Auditing
+- Scan container images used by the application for outdated packages and known vulnerabilities.
+- Generate reports highlighting risky configurations in Docker and OCI images.
+
+## 30. Network Inventory Integration
+- Import device and topology data from common network inventory systems.
+- Use imported context to enrich scan results and prioritize high-value targets.
