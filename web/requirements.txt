@@ -10,3 +10,6 @@ requests
 werkzeug
 cryptography
 pyOpenSSL
+miniupnpc
+pgrok
+coverage

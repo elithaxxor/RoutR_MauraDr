@@ -1,3 +1,4 @@
+[![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey.svg)](coverage-report)
 # RoutR_MauraDr v1.1 Alpha - [Web Interface Added]
 
 
@@ -153,6 +154,7 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
 - **Firmware Update Checks**
   - Compare detected router firmware with cached vendor data and alert when updates exist.
 - **Adaptive Scan Scheduling**
+  - Integration with masscan, arp-scan, hydra, gvm-cli, miniupnpc, nikto, sqlmap, and pgrok via a unified tool dispatcher.
   - Schedule recurring scans that adjust frequency based on previous scores.
 - **Mobile Notifications**
   - Push critical alerts via Pushbullet when configured.
