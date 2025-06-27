@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "routR-mauradr"
+version = "0.1.0"
+description = "Network scanning and enumeration toolkit"
+authors = [{name="RoutR", email="routR@example.com"}]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+dependencies = [
+    "flask",
+    "flask-restx",
+    "flask-jwt-extended",
+    "impacket",
+    "pandas",
+    "matplotlib",
+    "networkx",
+    "jinja2",
+    "requests",
+    "werkzeug",
+    "cryptography",
+    "pyOpenSSL",
+    "miniupnpc",
+    "pgrok",
+]
+
+[project.scripts]
+routR = "web.src.cli:main"

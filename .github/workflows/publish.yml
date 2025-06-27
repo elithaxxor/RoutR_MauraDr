@@ -1,0 +1,22 @@
+name: Build Wheels
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Build wheel
+        run: |
+          pip install build
+          python -m build --wheel
+      - uses: actions/upload-artifact@v3
+        with:
+          name: wheel
+          path: dist/*.whl
