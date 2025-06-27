@@ -19,3 +19,11 @@ class TestWrappers(unittest.TestCase):
 
         with mock.patch("routR.tools.wrappers.is_available", return_value=False):
             asyncio.run(run())
+
+    def test_run_hcxdumptool_missing(self):
+        async def run():
+            result = await wrappers.run_hcxdumptool("wlan0", "out.pcap")
+            self.assertIn("error", result)
+
+        with mock.patch("routR.tools.wrappers.is_available", return_value=False):
+            asyncio.run(run())

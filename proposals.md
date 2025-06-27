@@ -7,3 +7,6 @@
 - Support AppImage packaging for easier Linux distribution.
 - Add GPU monitoring dashboard to visualize hashcat workload.
 - Integrate Zeek for automated pcap analysis with alerting.
+- hcxdumptool integration for PMKID collection and automated hashcat cracking.
+- Real-time security event timeline with WebSocket updates.
+- QR code generation for securely sharing captured Wi-Fi credentials.
