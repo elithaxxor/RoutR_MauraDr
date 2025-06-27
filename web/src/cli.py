@@ -8,7 +8,13 @@ from .integrations.wigle import WigleClient
 from .integrations.censys_client import CensysClient
 from .plugin_manager import list_plugins as pm_list, enable_plugin, disable_plugin, install_plugin
 from .query_library import list_queries, save_query, get_query
+from pathlib import Path
 from .batch_api import run_batch, save_report
+from .ipv6_support import discover_ipv6_hosts
+from .result_dashboard import ResultDashboard
+from .mobile_companion import send_summary as send_mobile_summary
+from .correlation import correlate_hosts
+from .export_scheduler import ExportScheduler
 
 
 def cmd_scan(args):
@@ -110,6 +116,53 @@ def cmd_batch(args):
     print(json.dumps(data, indent=2))
 
 
+def cmd_ipv6_scan(args):
+    hosts = discover_ipv6_hosts(args.cidr)
+    for h in hosts:
+        print(h)
+
+
+def cmd_dashboard_ports(args):
+    dash = ResultDashboard(Path(args.dir))
+    summary = dash.summarize_ports()
+    print(json.dumps(summary, indent=2))
+
+
+def cmd_mobile_send(args):
+    msg = args.message
+    if args.file:
+        try:
+            with open(args.file, 'r', encoding='utf-8') as f:
+                msg = f.read()
+        except Exception:
+            pass
+    if not send_mobile_summary(args.title, msg):
+        print('Failed to send notification')
+
+
+def cmd_correlate(args):
+    with open(args.file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    result = correlate_hosts(data)
+    print(json.dumps(result, indent=2))
+
+
+def cmd_export_schedule(args):
+    def load():
+        try:
+            with open(args.results, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            return {}
+
+    sched = ExportScheduler()
+    sched.schedule(load, interval=args.interval, csv=args.csv)
+    try:
+        sched.run()
+    except KeyboardInterrupt:
+        pass
+
+
 def main():
     parser = argparse.ArgumentParser(description="SMB-Scor3 Command Line")
     sub = parser.add_subparsers(dest="cmd")
@@ -167,6 +220,30 @@ def main():
     q_run.add_argument("service", choices=["shodan", "censys", "wigle"])
     q_run.add_argument("name")
     q_run.set_defaults(func=cmd_query_run)
+
+    ipv6_p = sub.add_parser("ipv6-scan", help="Discover IPv6 hosts")
+    ipv6_p.add_argument("cidr", help="IPv6 network range")
+    ipv6_p.set_defaults(func=cmd_ipv6_scan)
+
+    dash = sub.add_parser("dashboard", help="Summarize past results")
+    dash.add_argument("dir", help="Directory of result JSONs")
+    dash.set_defaults(func=cmd_dashboard_ports)
+
+    mobile = sub.add_parser("mobile-send", help="Send a message to mobile device")
+    mobile.add_argument("title")
+    mobile.add_argument("message")
+    mobile.add_argument("--file")
+    mobile.set_defaults(func=cmd_mobile_send)
+
+    corr = sub.add_parser("correlate", help="Correlate results with Shodan/Censys")
+    corr.add_argument("file", help="Results JSON")
+    corr.set_defaults(func=cmd_correlate)
+
+    esched = sub.add_parser("export-schedule", help="Schedule periodic exports")
+    esched.add_argument("results", help="Results JSON to export")
+    esched.add_argument("--interval", type=int, default=3600)
+    esched.add_argument("--csv", action="store_true")
+    esched.set_defaults(func=cmd_export_schedule)
 
     batch = sub.add_parser("batch", help="Run batch API lookups")
     batch.add_argument("file", help="File with IPs or queries")
