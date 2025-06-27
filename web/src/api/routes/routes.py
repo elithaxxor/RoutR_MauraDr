@@ -6,6 +6,7 @@ from ..scoring import calculate_vulnerability_score, generate_remediation
 from ..tasks.scan_tasks import run_full_scan
 from ..logging import setup_logger
 from ..utils import validate_cidr
+from ..dependency_updates import list_outdated, update_packages
 
 logger = setup_logger('smb_enum.db')
 api_ns = Namespace('api', description='SMB-Scor3 operations')
@@ -43,3 +44,19 @@ class Results(Resource):
                 return {'status': 'completed', 'results': result.get()}, 200
             return {'status': 'failed', 'error': str(result.get(propagate=False))}, 500
         return {'status': 'pending'}, 202
+
+
+@api_ns.route('/updates')
+class DependencyUpdates(Resource):
+    @jwt_required()
+    def get(self):
+        """Return a list of outdated packages."""
+        return {'outdated': list_outdated()}, 200
+
+    @jwt_required()
+    def post(self):
+        """Apply updates for all outdated packages."""
+        packages = [p['name'] for p in list_outdated()]
+        success = update_packages(packages)
+        return {'updated': packages, 'success': success}, 200
+

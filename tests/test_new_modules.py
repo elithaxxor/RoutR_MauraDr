@@ -17,6 +17,13 @@ MODULES = [
 
     'web.src.config_backup',
 
+    # Newly added feature modules
+    'web.src.dependency_updates',
+    'web.src.report_generator',
+    'web.src.wireless_scanner',
+    'web.src.container_audit',
+    'web.src.inventory_import',
+
 ]
 
 
