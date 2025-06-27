@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [2.0.0] - 2025-06-27
 ### Added
 - Tool wrappers for masscan, arp-scan, hydra, gvm-cli, miniupnpc, nikto, sqlmap and pgrok.
 - Async tool dispatcher (`routR/tools/runner.py`).
@@ -8,5 +8,6 @@
 - Tkinter GUI checkboxes and progress bars for new tools.
 - GitHub Actions CI with black, pytest and shellcheck.
 - Install helper scripts for apt and brew.
+- GPU monitoring module with optional nvidia-smi/rocm-smi support.
 ### Changed
 - requirements updated with new dependencies.
