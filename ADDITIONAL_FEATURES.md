@@ -18,3 +18,12 @@ The following suggestions could further enhance the RoutR_MauraDr toolkit.
   - Start/stop netcat and ngrok tunnels from the GUI.
 - **Export Scheduler**
   - Schedule automatic exports of scan summaries to JSON or CSV.
+
+## New Visualization Ideas
+
+- **Dynamic Topology Layers**
+  - Overlay third-party data, such as Shodan results, directly on the network map.
+- **Historical View Mode**
+  - Allow users to step through past scans to visualize how the network evolved over time.
+- **Map Export Options**
+  - Save topology images as PNG or interactive HTML for easy sharing.
