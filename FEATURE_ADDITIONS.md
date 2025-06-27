@@ -16,3 +16,9 @@ The following ideas could further extend RoutR_MauraDr:
    - Record user holdings and calculate profit and loss metrics.
 7. **iCloud Sync & Auto-Update**
    - Keep settings synchronized and notify about new releases.
+8. **Voice-Controlled Operation**
+   - Integrate speech recognition to trigger common scans hands-free.
+9. **Cloud Configuration Backup**
+   - Optionally sync plugin settings and query libraries to cloud storage.
+10. **Interactive Network Visualization**
+   - Display discovered devices on a dynamic topology map in the GUI.
