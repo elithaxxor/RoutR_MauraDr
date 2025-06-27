@@ -124,3 +124,15 @@ This document outlines proposed enhancements for the RoutR_MauraDr project.
 ## 30. Network Inventory Integration
 - Import device and topology data from common network inventory systems.
 - Use imported context to enrich scan results and prioritize high-value targets.
+
+## 31. Automated Shodan & Censys Correlation
+- Fetch data from Shodan and Censys APIs and cross-reference with local scan results.
+- Highlight discrepancies or newly discovered services.
+
+## 32. Live Tunnel Management
+- Display status of running netcat and ngrok tunnels in the GUI.
+- Provide buttons to start/stop tunnels on demand.
+
+## 33. Export Scheduler
+- Allow users to schedule automatic exports of scan summaries to JSON or CSV.
+- Useful for offline review or archiving results.
