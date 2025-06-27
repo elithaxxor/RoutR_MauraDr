@@ -6,6 +6,7 @@ from .enumeration import enumerate_lan_hosts
 from .scoring import calculate_vulnerability_score, generate_remediation
 from .logging import setup_logger
 from .config import config
+from . import net_services
 
 logger = setup_logger(config['database'])
 
@@ -16,6 +17,9 @@ class ScanGUI(tk.Tk):
         super().__init__()
         self.title("SMB-Scor3 GUI")
         self.geometry("600x400")
+        self.nc_proc = None
+        self.ngrok_tcp_proc = None
+        self.ngrok_http_proc = None
         self.create_widgets()
 
     def create_widgets(self):
@@ -28,6 +32,11 @@ class ScanGUI(tk.Tk):
         self.cidr_entry.insert(0, "192.168.1.0/24")
 
         tk.Button(frame, text="Start Scan", command=self.start_scan).grid(row=0, column=2, padx=5)
+
+        self.netcat_btn = tk.Button(frame, text="Start Netcat", command=self.toggle_netcat)
+        self.netcat_btn.grid(row=1, column=0, pady=5)
+        self.ngrok_btn = tk.Button(frame, text="Start Ngrok", command=self.toggle_ngrok)
+        self.ngrok_btn.grid(row=1, column=1, pady=5)
 
         self.log_box = scrolledtext.ScrolledText(self, state="disabled", height=15)
         self.log_box.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
@@ -54,6 +63,33 @@ class ScanGUI(tk.Tk):
         self.log_box.insert(tk.END, text)
         self.log_box.configure(state="disabled")
         self.log_box.yview(tk.END)
+
+    def toggle_netcat(self):
+        if net_services.is_running(self.nc_proc):
+            net_services.stop_process(self.nc_proc)
+            self.nc_proc = None
+            self.netcat_btn.configure(text="Start Netcat")
+            self.append_log("Netcat stopped\n")
+        else:
+            self.nc_proc = net_services.start_netcat_listener()
+            if self.nc_proc:
+                self.netcat_btn.configure(text="Stop Netcat")
+                self.append_log("Netcat started\n")
+
+    def toggle_ngrok(self):
+        if net_services.is_running(self.ngrok_tcp_proc):
+            net_services.stop_process(self.ngrok_tcp_proc)
+            net_services.stop_process(self.ngrok_http_proc)
+            self.ngrok_tcp_proc = None
+            self.ngrok_http_proc = None
+            self.ngrok_btn.configure(text="Start Ngrok")
+            self.append_log("Ngrok tunnels stopped\n")
+        else:
+            self.ngrok_tcp_proc = net_services.start_ngrok_tcp()
+            self.ngrok_http_proc = net_services.start_ngrok_http()
+            if self.ngrok_tcp_proc or self.ngrok_http_proc:
+                self.ngrok_btn.configure(text="Stop Ngrok")
+                self.append_log("Ngrok tunnels started\n")
 
 
 def launch_gui():

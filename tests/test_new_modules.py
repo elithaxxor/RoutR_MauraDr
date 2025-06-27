@@ -24,6 +24,8 @@ MODULES = [
     'web.src.wireless_scanner',
     'web.src.container_audit',
     'web.src.inventory_import',
+    'web.src.correlation',
+    'web.src.export_scheduler',
 # Additional feature modules
     'web.src.role_tokens',
     'web.src.result_dashboard',
