@@ -1,6 +1,8 @@
 import io
 import json
 import unittest
+import tempfile
+from pathlib import Path
 from unittest import mock
 from tempfile import TemporaryDirectory
 from pathlib import Path
@@ -16,6 +18,13 @@ class TestRunner(unittest.TestCase):
             jobs = runner.load_jobs(None)
         self.assertEqual(jobs, job_data["jobs"])
 
+    def test_load_jobs_from_file(self):
+        job_data = {"jobs": [{"tool": "masscan", "args": ["127.0.0.1"]}]}
+        with tempfile.TemporaryDirectory() as td:
+            p = Path(td) / "jobs.json"
+            p.write_text(json.dumps(job_data))
+            jobs = load_jobs(p)
+        self.assertEqual(jobs, job_data["jobs"])
     def test_main_report_dir(self):
         job_data = {"jobs": []}
         with TemporaryDirectory() as tmpdir:

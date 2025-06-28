@@ -36,7 +36,23 @@ async def run_jobs(jobs: List[Dict[str, Any]], job_id: str) -> Dict[str, Any]:
 
 
 def load_jobs(path: Optional[Path]) -> List[Dict[str, Any]]:
-    data = json.load(path.open()) if path else json.load(sys.stdin)
+    """Load job definitions from ``path`` or ``stdin``.
+
+    If ``path`` is provided, the file is opened in a context manager.  A missing
+    file results in an empty list being returned.  Invalid JSON results in a
+    ``ValueError`` with a clear message.
+    """
+
+    try:
+        if path:
+            with path.open() as f:
+                data = json.load(f)
+        else:
+            data = json.load(sys.stdin)
+    except FileNotFoundError:
+        return []
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"Invalid JSON in job file: {path}") from exc
     return data.get("jobs", [])
 
 
