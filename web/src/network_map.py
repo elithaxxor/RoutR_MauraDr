@@ -101,6 +101,8 @@ def build_topology(hosts: List[str], router_ip: Optional[str] = None, shodan_api
 
 def show_topology(hosts: List[str], parent: tk.Toplevel, router_ip: Optional[str] = None) -> None:
     """Display an interactive topology map in a Tk window."""
+    if not plt:
+        raise RuntimeError("matplotlib not available")
     G = build_topology(hosts, router_ip)
     fig, ax = plt.subplots(figsize=(6, 4))
     pos = nx.spring_layout(G)
