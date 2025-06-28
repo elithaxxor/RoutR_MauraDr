@@ -4,8 +4,10 @@ import unittest
 import tempfile
 from pathlib import Path
 from unittest import mock
+from tempfile import TemporaryDirectory
+from pathlib import Path
 
-from routR.tools.runner import load_jobs
+from routR.tools import runner
 
 
 class TestRunner(unittest.TestCase):
@@ -13,7 +15,7 @@ class TestRunner(unittest.TestCase):
         job_data = {"jobs": [{"tool": "masscan", "args": ["127.0.0.1"]}]}
         buf = io.StringIO(json.dumps(job_data))
         with mock.patch("sys.stdin", buf):
-            jobs = load_jobs(None)
+            jobs = runner.load_jobs(None)
         self.assertEqual(jobs, job_data["jobs"])
 
     def test_load_jobs_from_file(self):
@@ -23,7 +25,19 @@ class TestRunner(unittest.TestCase):
             p.write_text(json.dumps(job_data))
             jobs = load_jobs(p)
         self.assertEqual(jobs, job_data["jobs"])
+    def test_main_report_dir(self):
+        job_data = {"jobs": []}
+        with TemporaryDirectory() as tmpdir:
+            job_file = Path(tmpdir) / "jobs.json"
+            job_file.write_text(json.dumps(job_data))
+            out = io.StringIO()
+            with mock.patch("sys.stdout", out):
+                runner.main(["--job-file", str(job_file), "--report-dir", tmpdir])
+            job_id = out.getvalue().strip()
+            report_path = Path(tmpdir) / f"{job_id}.json"
+            self.assertTrue(report_path.exists())
 
 
 if __name__ == "__main__":
     unittest.main()
+
