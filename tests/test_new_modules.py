@@ -41,6 +41,7 @@ MODULES = [
     'web.src.data_retention',
     'web.src.virtualization',
     'web.src.browser_quick_scan',
+    'web.src.trading.binance_execution',
 
 ]
 
