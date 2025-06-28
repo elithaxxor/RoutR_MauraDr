@@ -10,3 +10,5 @@
 - hcxdumptool integration for PMKID collection and automated hashcat cracking.
 - Real-time security event timeline with WebSocket updates.
 - QR code generation for securely sharing captured Wi-Fi credentials.
+- Extend certificate health checks with OCSP validation.
+- Add interactive topology map into the Flask dashboard using D3.js.

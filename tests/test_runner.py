@@ -23,7 +23,7 @@ class TestRunner(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             p = Path(td) / "jobs.json"
             p.write_text(json.dumps(job_data))
-            jobs = load_jobs(p)
+            jobs = runner.load_jobs(p)
         self.assertEqual(jobs, job_data["jobs"])
     def test_main_report_dir(self):
         job_data = {"jobs": []}

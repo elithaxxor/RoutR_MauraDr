@@ -11,3 +11,12 @@
 - GPU monitoring module with optional nvidia-smi/rocm-smi support.
 ### Changed
 - requirements updated with new dependencies.
+
+## [2.1.0] - 2025-07-01
+### Added
+- Certificate health checks for HTTPS services.
+- D3.js interactive topology export.
+- Configuration baseline alerts for risky ports.
+- MITRE ATT&CK correlation of findings.
+### Fixed
+- Test runner import issue in `tests/test_runner.py`.
