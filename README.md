@@ -1,5 +1,5 @@
 [![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey.svg)](coverage-report)
-# RoutR_MauraDr v2.0.0 - [Web Interface Added]
+# RoutR_MauraDr v2.1.0 - [Web Interface Added]
 
 
 NetVision is a Bash-based utility that automates network discovery, quick port scanning (with stealthy SYN scans and OS detection), and simple router analysis (including an attempt to detect router firmware). Additionally, it installs and starts **netcat** (on port 6666) and **ngrok** (TCP on port 6667, HTTP on port 80) for easy remote tunneling and local port listening.
@@ -24,6 +24,9 @@ NetVision is a Bash-based utility that automates network discovery, quick port s
 	•	Stealthy port scan & OS detection via nmap
 	•	Integrates with OpenVAS/Nessus for deeper scans
 	•	Firmware update checker using cached vendor data
+        •       Certificate health checks for HTTPS services
+        •       Configuration baseline alerts for risky router settings
+        •       MITRE ATT&CK technique correlation
 
 🌐 Remote Tunneling
 	•	Starts netcat listener on port 6666
@@ -150,6 +153,8 @@ See `FEATURE_PROPOSAL.md` for a detailed roadmap of these planned improvements.
   - Save scan data to a JSON file for later review.
 - **Desktop GUI**
   - Launch `web/src/gui.py` for a basic Tkinter interface to run scans and view logs.
+- **Interactive Topology Map**
+  - Zoomable D3.js visualization of hosts and connections.
 - **External Scanner Integration**
   - Optional hooks for OpenVAS and Nessus to perform deeper vulnerability analysis.
 - **Firmware Update Checks**

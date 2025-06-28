@@ -179,3 +179,74 @@ def export_html(graph: nx.Graph, path: str) -> None:
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
 
+
+def export_d3_html(graph: nx.Graph, path: str) -> None:
+    """Export topology as a D3.js force graph."""
+    data_json = json.dumps(json_graph.node_link_data(graph)).replace("'", "\'")
+    html = """
+    <html>
+    <body>
+    <svg width='800' height='600'></svg>
+    <script src='https://d3js.org/d3.v7.min.js'></script>
+    <script>
+    var graph = JSON.parse('GRAPH_DATA');
+    var svg = d3.select('svg'),
+        width = +svg.attr('width'),
+        height = +svg.attr('height');
+
+    var simulation = d3.forceSimulation(graph.nodes)
+        .force('link', d3.forceLink(graph.links).id(d => d.id).distance(80))
+        .force('charge', d3.forceManyBody().strength(-100))
+        .force('center', d3.forceCenter(width / 2, height / 2));
+
+    var link = svg.append('g').selectAll('line')
+        .data(graph.links)
+        .enter().append('line')
+        .attr('stroke', '#999');
+
+    var node = svg.append('g').selectAll('circle')
+        .data(graph.nodes)
+        .enter().append('circle')
+        .attr('r', 5)
+        .attr('fill', '#69b3a2')
+        .call(d3.drag()
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended));
+
+    node.append('title').text(d => d.id);
+
+    simulation.on('tick', () => {
+        link.attr('x1', d => d.source.x)
+            .attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x)
+            .attr('y2', d => d.target.y);
+
+        node.attr('cx', d => d.x)
+            .attr('cy', d => d.y);
+    });
+
+    function dragstarted(event) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        event.subject.fx = event.subject.x;
+        event.subject.fy = event.subject.y;
+    }
+
+    function dragged(event) {
+        event.subject.fx = event.x;
+        event.subject.fy = event.y;
+    }
+
+    function dragended(event) {
+        if (!event.active) simulation.alphaTarget(0);
+        event.subject.fx = null;
+        event.subject.fy = null;
+    }
+    </script>
+    </body>
+    </html>
+    """
+    html = html.replace('GRAPH_DATA', data_json)
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(html)
+

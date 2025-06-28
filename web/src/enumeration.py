@@ -3,6 +3,9 @@ from .logging import setup_logger
 from .config import config
 from .scanning import run_nmap_scan
 from .correlation import correlate_hosts
+from .certificate import check_https_certificates
+from .baseline import check_baseline
+from .attack_mapping import correlate_attack
 import subprocess
 
 logger = setup_logger(config['database'])
@@ -62,4 +65,9 @@ def enumerate_lan_hosts(hosts, intensity="low"):
 
     # Cross-reference with external data sources
     host_data = correlate_hosts(host_data)
+    # Certificate and baseline checks
+    host_data = check_https_certificates(host_data)
+    host_data = check_baseline(host_data)
+    # Map to MITRE ATT&CK techniques
+    host_data = correlate_attack(host_data)
     return host_data
