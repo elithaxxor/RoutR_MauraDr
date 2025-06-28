@@ -349,6 +349,46 @@ python3 -m web.src.cli scan 192.168.1.0/24 --intensity medium
 python3 -m web.src.cli shodan-search "apache"
 ```
 
+### Enumeration with Certificate and Baseline Checks
+
+Running a scan through the CLI automatically performs HTTPS certificate
+validation and compares the results against the configuration baseline.
+To generate a full report with these checks enabled run:
+
+```bash
+python3 -m web.src.cli scan 192.168.1.0/24 --intensity high > scan_results.json
+```
+
+Each host entry in `scan_results.json` will include a `certificate` section
+describing expiry and hostname matching along with any `baseline_alerts`
+highlighting risky open management ports.
+
+### Viewing the Topology Map
+
+The Tkinter GUI provides a quick way to view the network topology. Launch it
+with:
+
+```bash
+python3 web/src/gui.py
+```
+
+After a scan finishes click **Show Map** to open an interactive D3.js view of
+the discovered hosts.
+
+To export the map directly from the CLI you can use the helper functions in
+`web.src.network_map`:
+
+```bash
+python3 - <<'EOF'
+from web.src.network_map import build_topology, export_d3_html
+hosts = ['192.168.1.2']
+graph = build_topology(hosts, router_ip='192.168.1.1')
+export_d3_html(graph, 'topology.html')
+EOF
+```
+
+Open `topology.html` in your browser to explore the network graph.
+
 ---
 
 ## **How It Works (Detailed)** <a id="how-it-works-detailed"></a>
