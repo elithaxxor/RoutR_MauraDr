@@ -18,5 +18,7 @@
 - D3.js interactive topology export.
 - Configuration baseline alerts for risky ports.
 - MITRE ATT&CK correlation of findings.
+- Unit tests for certificate checks, configuration baseline,
+  D3 modules and the interactive topology export.
 ### Fixed
 - Test runner import issue in `tests/test_runner.py`.
