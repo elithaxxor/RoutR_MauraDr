@@ -43,7 +43,17 @@ def load_jobs(path: Optional[Path]) -> List[Dict[str, Any]]:
 def main(argv: Optional[List[str]] = None) -> None:
     parser = argparse.ArgumentParser(description="RoutR tool runner")
     parser.add_argument("--job-file", type=Path, help="JSON job description")
+    parser.add_argument(
+        "--report-dir",
+        type=Path,
+        default=Path("reports"),
+        help="directory to store generated reports",
+    )
     args = parser.parse_args(argv)
+
+    global REPORT_DIR
+    REPORT_DIR = args.report_dir
+    REPORT_DIR.mkdir(exist_ok=True)
 
     jobs = load_jobs(args.job_file)
     job_id = str(uuid.uuid4())
