@@ -15,5 +15,12 @@
   "wigle": {"username": "", "password": ""},
   "default_shodan_query": "net:192.168.1.0/24",
   "censys": {"id": "", "secret": ""},
-  "default_censys_query": "services.service_name:HTTP"
+  "default_censys_query": "services.service_name:HTTP",
+  "binance": {
+    "api_key": "",
+    "api_secret": "",
+    "live": false,
+    "max_position": 0,
+    "rate_limit": 1
+  }
 }
